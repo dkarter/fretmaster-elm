@@ -6,6 +6,7 @@ import Debug exposing (log)
 import Html exposing (Html, div, h1, img, span, text)
 import Html.Attributes exposing (class, classList, src)
 import Html.Events exposing (onClick)
+import List.Extra exposing (elemIndex)
 import Maybe exposing (withDefault)
 
 
@@ -44,10 +45,26 @@ getGuitarStringName num =
     withDefault "" guitarString
 
 
+getGuitarNoteName : Int -> Int -> String
+getGuitarNoteName stringNum fretNum =
+    let
+        stringName =
+            getGuitarNoteName stringNum fretNum
+
+        stringNoteIndex =
+            withDefault 0 <| elemIndex stringName notes
+
+        selectedNoteIndex =
+            stringNoteIndex + fretNum
+    in
+    String.fromInt selectedNoteIndex
+
+
 type alias GuitarNote =
     { stringNum : Int
     , fretNum : Int
     , stringName : String
+    , noteName : String
     }
 
 
@@ -61,6 +78,7 @@ init =
             { stringNum = 0
             , fretNum = 0
             , stringName = "E"
+            , noteName = "E"
             }
       }
     , Cmd.none
@@ -86,6 +104,7 @@ update msg model =
                     , fretNum =
                         fretNum
                     , stringName = getGuitarStringName stringNum
+                    , noteName = getGuitarNoteName stringNum fretNum
                     }
               }
             , Cmd.none
@@ -143,6 +162,10 @@ renderSelectedNote selectedNote =
         , div [ class "fret-num" ]
             [ span [ class "label" ] [ text "Fret #:" ]
             , text (String.fromInt selectedNote.fretNum)
+            ]
+        , div [ class "note-name" ]
+            [ span [ class "label" ] [ text "Note:" ]
+            , text selectedNote.noteName
             ]
         ]
 
