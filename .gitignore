@@ -1,6 +1,8 @@
 # Distribution
 build/
 
+tmp/
+
 # elm-package generated files
 elm-stuff
 
