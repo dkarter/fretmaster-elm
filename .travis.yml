@@ -3,7 +3,7 @@ language: node_js
 sudo: required
 
 node_js:
-  - '7'
+  - '10'
 
 install:
   - npm i create-elm-app -g
