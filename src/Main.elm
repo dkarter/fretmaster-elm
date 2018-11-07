@@ -1,4 +1,4 @@
-module Main exposing (Model, Msg(..), init, main, renderFretBoard, update, view)
+module Main exposing (Model, Msg(..), getGuitarNoteName, getGuitarStringName, init, main, update, view)
 
 import Array
 import Browser
@@ -14,57 +14,15 @@ import Maybe exposing (withDefault)
 ---- MODEL ----
 
 
-notes : List String
-notes =
-    [ "A", "A#/Bb", "B", "C", "C#/Db", "E", "F", "F#/Gb", "G", "G#/Ab" ]
-
-
-markerFrets : List Int
-markerFrets =
-    [ 3, 5, 7, 9, 12 ]
-
-
-isMarkerFret : Int -> Int -> Bool
-isMarkerFret fretNum stringNum =
-    stringNum == 3 && (markerFrets |> List.member fretNum)
-
-
-guitarStrings : List String
-guitarStrings =
-    [ "E", "B", "G", "D", "A", "E" ]
-
-
-getGuitarStringName : Int -> String
-getGuitarStringName num =
-    let
-        guitarString =
-            guitarStrings
-                |> Array.fromList
-                |> Array.get (num - 1)
-    in
-    withDefault "" guitarString
-
-
-getGuitarNoteName : Int -> Int -> String
-getGuitarNoteName stringNum fretNum =
-    let
-        stringName =
-            getGuitarNoteName stringNum fretNum
-
-        stringNoteIndex =
-            withDefault 0 <| elemIndex stringName notes
-
-        selectedNoteIndex =
-            stringNoteIndex + fretNum
-    in
-    String.fromInt selectedNoteIndex
+type alias Note =
+    String
 
 
 type alias GuitarNote =
     { stringNum : Int
     , fretNum : Int
-    , stringName : String
-    , noteName : String
+    , stringName : Note
+    , noteName : Note
     }
 
 
@@ -83,6 +41,79 @@ init =
       }
     , Cmd.none
     )
+
+
+notes : List Note
+notes =
+    [ "A", "A#/Bb", "B", "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab" ]
+
+
+markerFrets : List Int
+markerFrets =
+    [ 3, 5, 7, 9, 12 ]
+
+
+isMarkerFret : Int -> Int -> Bool
+isMarkerFret fretNum stringNum =
+    stringNum == 3 && (markerFrets |> List.member fretNum)
+
+
+guitarStrings : List Note
+guitarStrings =
+    [ "E", "B", "G", "D", "A", "E" ]
+
+
+getGuitarStringName : Int -> Note
+getGuitarStringName num =
+    let
+        guitarString =
+            guitarStrings
+                |> Array.fromList
+                |> Array.get (num - 1)
+    in
+    withDefault "" guitarString
+
+
+getNoteNameByIndex : Int -> Note
+getNoteNameByIndex index =
+    let
+        noteName =
+            notes
+                |> Array.fromList
+                |> Array.get index
+    in
+    withDefault "Err!" noteName
+
+
+getGuitarNoteName : Int -> Int -> Note
+getGuitarNoteName stringNum fretNum =
+    let
+        stringName =
+            getGuitarStringName stringNum
+
+        stringNoteIndex =
+            withDefault 0 (elemIndex stringName notes)
+
+        virtualIndex =
+            stringNoteIndex + fretNum
+
+        remainder =
+            remainderBy noteCount virtualIndex
+
+        noteCount =
+            notes |> List.length
+
+        wholeCycles =
+            floor (toFloat virtualIndex / toFloat noteCount)
+
+        selectedNoteIndex =
+            if virtualIndex >= noteCount then
+                virtualIndex - wholeCycles * noteCount
+
+            else
+                virtualIndex
+    in
+    getNoteNameByIndex selectedNoteIndex
 
 
 
@@ -135,10 +166,10 @@ renderStrings =
 
 
 renderString : Int -> Html Msg
-renderString num =
+renderString stringNum =
     div [ class "string-container" ]
-        [ div [ class "string-name" ] [ text (getGuitarStringName num) ]
-        , div [ class "string" ] (renderFrets num)
+        [ div [ class "string-name" ] [ text (getGuitarStringName stringNum) ]
+        , div [ class "string" ] (renderFrets stringNum)
         ]
 
 
@@ -149,8 +180,11 @@ renderFretBoard =
 
 renderSelectedNote : GuitarNote -> Html Msg
 renderSelectedNote selectedNote =
-    div [ class "selected-string-info" ]
+    div [ class "selected-note-info" ]
         [ div [ class "title" ] [ text "Selected Note:" ]
+        , div [ class "note-name" ]
+            [ text selectedNote.noteName
+            ]
         , div [ class "string-name" ]
             [ span [ class "label" ] [ text "String:" ]
             , text selectedNote.stringName
@@ -162,10 +196,6 @@ renderSelectedNote selectedNote =
         , div [ class "fret-num" ]
             [ span [ class "label" ] [ text "Fret #:" ]
             , text (String.fromInt selectedNote.fretNum)
-            ]
-        , div [ class "note-name" ]
-            [ span [ class "label" ] [ text "Note:" ]
-            , text selectedNote.noteName
             ]
         ]
 

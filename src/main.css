@@ -64,6 +64,20 @@ img {
   top: 2.5rem;
 }
 
+.fret:nth-child(12).fret-marker::before {
+  content: "⚫️";
+  width: 6rem;
+  position: absolute;
+  top: -0.5rem;
+}
+
+.fret:nth-child(12).fret-marker::after {
+  content: "⚫️";
+  width: 6rem;
+  position: absolute;
+  top: 5.5rem;
+}
+
 .string-line {
   border-top: 1px solid silver;
   border-bottom: 1px solid silver;
@@ -76,16 +90,22 @@ img {
   background: lightblue;
 }
 
-.selected-string-info {
+.selected-note-info {
   margin-top: 2rem;
   text-align: left;
 }
 
-.selected-string-info .title {
+.selected-note-info .title {
   font-weight: bold;
 }
 
-.selected-string-info .label {
+.selected-note-info .note-name {
+  font-size: 3.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.selected-note-info .label {
   width: 6rem;
   display: inline-block;
 }
