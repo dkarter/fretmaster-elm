@@ -1,12 +1,8 @@
-module Tests exposing (testGetGuitarNoteName, testGetGuitarStringName)
+module GuitarTests exposing (testGetGuitarNoteName, testGetGuitarStringName)
 
 import Expect
-import Main exposing (getGuitarNoteName, getGuitarStringName)
+import Guitar exposing (getGuitarNoteName, getGuitarStringName)
 import Test exposing (..)
-
-
-
--- Check out http://package.elm-lang.org/packages/elm-community/elm-test/latest to learn more about testing in Elm!
 
 
 testGetGuitarStringName : Test
