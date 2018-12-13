@@ -31,6 +31,21 @@ init =
     )
 
 
+isSelected : Model -> Int -> Int -> Bool
+isSelected model stringNum fretNum =
+    let
+        selectedGuitarNote =
+            model.selectedGuitarNote
+
+        selectedFretNum =
+            selectedGuitarNote.fretNum
+
+        selectedStringNum =
+            selectedGuitarNote.stringNum
+    in
+    selectedStringNum == stringNum && selectedFretNum == fretNum
+
+
 
 ---- UPDATE ----
 
@@ -64,33 +79,42 @@ update msg model =
 ---- VIEW ----
 
 
-renderFrets : Int -> List (Html Msg)
-renderFrets stringNum =
+renderFrets : Model -> Int -> List (Html Msg)
+renderFrets model stringNum =
     let
         renderFret fretNum =
             div [ classList [ ( "fret", True ), ( "fret-marker", isMarkerFret fretNum stringNum ) ] ]
-                [ div [ class "string-line", onClick (SelectGuitarNote stringNum fretNum) ] [] ]
+                [ div
+                    [ classList
+                        [ ( "string-line", True )
+                        , ( "selected", isSelected model stringNum fretNum )
+                        ]
+                    , onClick (SelectGuitarNote stringNum fretNum)
+                    ]
+                    []
+                ]
     in
     List.range 1 12
         |> List.map renderFret
 
 
-renderStrings =
+renderStrings : Model -> List (Html Msg)
+renderStrings model =
     List.range 1 6
-        |> List.map renderString
+        |> List.map (renderString model)
 
 
-renderString : Int -> Html Msg
-renderString stringNum =
+renderString : Model -> Int -> Html Msg
+renderString model stringNum =
     div [ class "string-container" ]
         [ div [ class "string-name" ] [ text (getGuitarStringName stringNum) ]
-        , div [ class "string" ] (renderFrets stringNum)
+        , div [ class "string" ] (renderFrets model stringNum)
         ]
 
 
-renderFretBoard : Html Msg
-renderFretBoard =
-    div [ class "fretboard" ] renderStrings
+renderFretBoard : Model -> Html Msg
+renderFretBoard model =
+    div [ class "fretboard" ] (renderStrings model)
 
 
 renderSelectedNote : GuitarNote -> Html Msg
@@ -124,7 +148,7 @@ view : Model -> Html Msg
 view model =
     div [ class "main" ]
         [ renderHeader
-        , renderFretBoard
+        , renderFretBoard model
         , renderSelectedNote model.selectedGuitarNote
         ]
 

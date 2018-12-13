@@ -79,15 +79,27 @@ img {
 }
 
 .string-line {
-  border-top: 1px solid silver;
-  border-bottom: 1px solid silver;
-  width: 100%;
-  height: 0.2rem;
   background: darkgrey;
+  border-bottom: 1px solid silver;
+  border-top: 1px solid silver;
+  height: 0.2rem;
+  position: relative;
+  width: 100%;
 }
 
 .string-line:hover {
   background: lightblue;
+}
+
+.string-line.selected::after {
+  background: #e52424cc;
+  border-radius: 2rem;
+  content: "";
+  height: 2rem;
+  left: calc(50% - 1rem);
+  position: absolute;
+  top: calc(50% - 1rem);
+  width: 2rem;
 }
 
 .selected-note-info {
