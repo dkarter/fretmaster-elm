@@ -32,7 +32,7 @@ getGuitarStringName num =
 
 markerFrets : List Int
 markerFrets =
-    [ 3, 5, 7, 9, 12 ]
+    [ 1, 3, 5, 7, 9, 12 ]
 
 
 isMarkerFret : Int -> Int -> Bool
