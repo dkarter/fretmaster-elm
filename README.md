@@ -31,3 +31,7 @@ yarn watch-css
 ```sh
 elm-app start
 ```
+
+## Testing
+
+Run `elm-app test`
