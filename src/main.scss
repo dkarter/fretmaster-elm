@@ -1,0 +1,133 @@
+body {
+  color: #293c4b;
+  font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande',
+    'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
+  margin: 0;
+  text-align: center;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+img {
+  margin: 20px 0;
+  max-width: 200px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fretboard {
+  margin-top: 3rem;
+  border-left: 1px solid black;
+}
+
+.string-container {
+  align-items: center;
+  display: flex;
+}
+
+.string-container:first-child {
+  border-top: 1px solid black;
+}
+
+.string-container:last-child {
+  border-bottom: 1px solid black;
+}
+
+.string {
+  display: flex;
+}
+
+.string-container .string-name {
+  margin: 0 1rem;
+  width: 1.2rem;
+}
+
+.fret {
+  align-items: center;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  display: flex;
+  height: 3rem;
+  position: relative;
+  width: 6rem;
+}
+
+.fret.fret-marker::after {
+  content: '⚫️';
+  width: 6rem;
+  position: absolute;
+  top: 2.5rem;
+}
+
+.fret:nth-child(12).fret-marker::before {
+  content: '⚫️';
+  width: 6rem;
+  position: absolute;
+  top: -0.5rem;
+}
+
+.fret:nth-child(12).fret-marker::after {
+  content: '⚫️';
+  width: 6rem;
+  position: absolute;
+  top: 5.5rem;
+}
+
+.string-line {
+  background: darkgrey;
+  border-bottom: 1px solid silver;
+  border-top: 1px solid silver;
+  height: 0.2rem;
+  position: relative;
+  width: 100%;
+}
+
+.string-line:hover {
+  background: lightblue;
+}
+
+.string-line.selected::after {
+  background: #e52424cc;
+  border-radius: 2rem;
+  content: '';
+  height: 2rem;
+  left: calc(50% - 1rem);
+  position: absolute;
+  top: calc(50% - 1rem);
+  width: 2rem;
+}
+
+.pick-note-btn {
+  margin-top: 2rem;
+  background: #687ce3;
+  color: white;
+  border: none;
+  height: 3rem;
+  font-size: 2rem;
+}
+
+.selected-note-info {
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.selected-note-info .title {
+  font-weight: bold;
+}
+
+.selected-note-info .note-name {
+  font-size: 3.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.selected-note-info .label {
+  width: 6rem;
+  display: inline-block;
+}

@@ -1,0 +1,15 @@
+{
+  "name": "fretbored-elm",
+  "scripts": {
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:dkarter/fretbored-elm.git",
+  "author": "Dorian Karter <dkarter@users.noreply.github.com>",
+  "license": "MIT",
+  "dependencies": {
+    "node-sass-chokidar": "^1.3.4"
+  }
+}
