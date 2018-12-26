@@ -5,3 +5,29 @@
 A guitar fretboard memorization game built in Elm
 
 ![screenshot](img/screenshot.png)
+
+
+## Dependencies
+
+This app uses Yarn. Ensure you have it installed.
+
+Install `create-elm-app` globally using yarn:
+
+```sh
+yarn global add create-elm-app
+```
+
+Then in the source directory run `yarn install`.
+
+
+## Running
+
+In two separate terminals run:
+
+```sh
+yarn watch-css
+```
+
+```sh
+elm-app start
+```
