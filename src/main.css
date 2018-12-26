@@ -102,6 +102,15 @@ img {
   width: 2rem;
 }
 
+.pick-note-btn {
+  margin-top: 2rem;
+  background: #687ce3;
+  color: white;
+  border: none;
+  height: 3rem;
+  font-size: 2rem;
+}
+
 .selected-note-info {
   margin-top: 2rem;
   text-align: left;

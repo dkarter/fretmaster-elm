@@ -1,4 +1,4 @@
-module Guitar exposing (GuitarNote, getGuitarNoteName, getGuitarStringName, isMarkerFret)
+module Guitar exposing (GuitarNote, createGuitarNote, getGuitarNoteName, getGuitarStringName, isMarkerFret)
 
 import Array
 import List.Extra exposing (elemIndex)
@@ -11,6 +11,15 @@ type alias GuitarNote =
     , fretNum : Int
     , stringName : Note
     , noteName : Note
+    }
+
+
+createGuitarNote : Int -> Int -> GuitarNote
+createGuitarNote stringNum fretNum =
+    { stringNum = stringNum
+    , fretNum = fretNum
+    , stringName = getGuitarStringName stringNum
+    , noteName = getGuitarNoteName stringNum fretNum
     }
 
 

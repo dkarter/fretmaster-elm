@@ -3,11 +3,12 @@ module Main exposing (Model, Msg(..), init, main, update, view)
 import Array
 import Browser
 import Debug exposing (log)
-import Guitar exposing (GuitarNote, getGuitarNoteName, getGuitarStringName, isMarkerFret)
-import Html exposing (Html, div, h1, img, span, text)
+import Guitar exposing (GuitarNote, createGuitarNote, getGuitarStringName, isMarkerFret)
+import Html exposing (Html, button, div, h1, img, span, text)
 import Html.Attributes exposing (class, classList, src)
 import Html.Events exposing (onClick)
 import Music exposing (getNoteNameByIndex, notes)
+import Random
 
 
 
@@ -15,20 +16,12 @@ import Music exposing (getNoteNameByIndex, notes)
 
 
 type alias Model =
-    { selectedGuitarNote : GuitarNote }
+    { selectedGuitarNote : GuitarNote, showNoteInfo : Bool }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { selectedGuitarNote =
-            { stringNum = 0
-            , fretNum = 0
-            , stringName = "E"
-            , noteName = "E"
-            }
-      }
-    , Cmd.none
-    )
+    ( { selectedGuitarNote = createGuitarNote 6 1, showNoteInfo = True }, Cmd.none )
 
 
 isSelected : Model -> Int -> Int -> Bool
@@ -46,30 +39,50 @@ isSelected model stringNum fretNum =
     selectedStringNum == stringNum && selectedFretNum == fretNum
 
 
+randomString : Random.Generator Int
+randomString =
+    Random.int 1 6
+
+
+randomFret : Random.Generator Int
+randomFret =
+    Random.int 1 12
+
+
+pickRandomNote =
+    Random.map2 createGuitarNote randomString randomFret
+
+
 
 ---- UPDATE ----
 
 
 type Msg
-    = SelectGuitarNote Int Int
+    = GuitarNoteClicked Int Int
+    | PickRandomNote
+    | RandomGuitarNoteSelected GuitarNote
+    | ShowNoteInfo
     | NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        SelectGuitarNote stringNum fretNum ->
-            ( { model
-                | selectedGuitarNote =
-                    { stringNum = stringNum
-                    , fretNum =
-                        fretNum
-                    , stringName = getGuitarStringName stringNum
-                    , noteName = getGuitarNoteName stringNum fretNum
-                    }
-              }
+        GuitarNoteClicked stringNum fretNum ->
+            ( { model | selectedGuitarNote = createGuitarNote stringNum fretNum, showNoteInfo = True }
             , Cmd.none
             )
+
+        PickRandomNote ->
+            ( model, Random.generate RandomGuitarNoteSelected pickRandomNote )
+
+        RandomGuitarNoteSelected guitarNote ->
+            ( { model | selectedGuitarNote = guitarNote, showNoteInfo = False }
+            , Cmd.none
+            )
+
+        ShowNoteInfo ->
+            ( { model | showNoteInfo = True }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
@@ -89,7 +102,7 @@ renderFrets model stringNum =
                         [ ( "string-line", True )
                         , ( "selected", isSelected model stringNum fretNum )
                         ]
-                    , onClick (SelectGuitarNote stringNum fretNum)
+                    , onClick (GuitarNoteClicked stringNum fretNum)
                     ]
                     []
                 ]
@@ -117,31 +130,50 @@ renderFretBoard model =
     div [ class "fretboard" ] (renderStrings model)
 
 
-renderSelectedNote : GuitarNote -> Html Msg
-renderSelectedNote selectedNote =
-    div [ class "selected-note-info" ]
-        [ div [ class "title" ] [ text "Selected Note:" ]
-        , div [ class "note-name" ]
-            [ text selectedNote.noteName
-            ]
-        , div [ class "string-name" ]
-            [ span [ class "label" ] [ text "String:" ]
-            , text selectedNote.stringName
-            ]
-        , div [ class "string-num" ]
-            [ span [ class "label" ] [ text "String #:" ]
-            , text (String.fromInt selectedNote.stringNum)
-            ]
-        , div [ class "fret-num" ]
-            [ span [ class "label" ] [ text "Fret #:" ]
-            , text (String.fromInt selectedNote.fretNum)
-            ]
-        ]
+renderSelectedNote : Model -> Html Msg
+renderSelectedNote model =
+    let
+        selectedNote =
+            model.selectedGuitarNote
+
+        showNoteInfo =
+            model.showNoteInfo
+    in
+    case showNoteInfo of
+        False ->
+            button [ class "show-answer-btn", onClick ShowNoteInfo ] [ text "Show Answer" ]
+
+        True ->
+            div [ class "selected-note-info" ]
+                [ div [ class "title" ] [ text "Selected Note:" ]
+                , div [ class "note-name" ]
+                    [ text selectedNote.noteName
+                    ]
+                , div [ class "string-name" ]
+                    [ span [ class "label" ] [ text "String:" ]
+                    , text selectedNote.stringName
+                    ]
+                , div [ class "string-num" ]
+                    [ span [ class "label" ] [ text "String #:" ]
+                    , text (String.fromInt selectedNote.stringNum)
+                    ]
+                , div [ class "fret-num" ]
+                    [ span [ class "label" ] [ text "Fret #:" ]
+                    , text (String.fromInt selectedNote.fretNum)
+                    ]
+                ]
 
 
 renderHeader : Html Msg
 renderHeader =
-    h1 [] [ text "FretBored" ]
+    h1 [] [ text "Elm Fretboard" ]
+
+
+renderGameControls : Model -> Html Msg
+renderGameControls model =
+    button
+        [ class "pick-note-btn", onClick PickRandomNote ]
+        [ text "Pick Random Note" ]
 
 
 view : Model -> Html Msg
@@ -149,7 +181,8 @@ view model =
     div [ class "main" ]
         [ renderHeader
         , renderFretBoard model
-        , renderSelectedNote model.selectedGuitarNote
+        , renderGameControls model
+        , renderSelectedNote model
         ]
 
 
