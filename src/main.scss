@@ -1,5 +1,9 @@
+$font-color: #293c4b;
+$primary-button-background: #687ce3;
+$primary-button-foreground: #fff;
+
 body {
-  color: #293c4b;
+  color: $font-color;
   font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande',
     'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
   margin: 0;
@@ -29,23 +33,23 @@ img {
 .string-container {
   align-items: center;
   display: flex;
-}
 
-.string-container:first-child {
-  border-top: 1px solid black;
-}
+  &:first-child {
+    border-top: 1px solid black;
+  }
 
-.string-container:last-child {
-  border-bottom: 1px solid black;
-}
+  &:last-child {
+    border-bottom: 1px solid black;
+  }
 
-.string {
-  display: flex;
-}
+  & .string-name {
+    margin: 0 1rem;
+    width: 1.2rem;
+  }
 
-.string-container .string-name {
-  margin: 0 1rem;
-  width: 1.2rem;
+  .string {
+    display: flex;
+  }
 }
 
 .fret {
@@ -56,27 +60,29 @@ img {
   height: 3rem;
   position: relative;
   width: 6rem;
-}
 
-.fret.fret-marker::after {
-  content: '⚫️';
-  width: 6rem;
-  position: absolute;
-  top: 2.5rem;
-}
+  &.fret-marker::after {
+    content: '⚫️';
+    width: 6rem;
+    position: absolute;
+    top: 2.5rem;
+  }
 
-.fret:nth-child(12).fret-marker::before {
-  content: '⚫️';
-  width: 6rem;
-  position: absolute;
-  top: -0.5rem;
-}
+  &:nth-child(12).fret-marker {
+    &::after {
+      content: '⚫️';
+      width: 6rem;
+      position: absolute;
+      top: 5.5rem;
+    }
 
-.fret:nth-child(12).fret-marker::after {
-  content: '⚫️';
-  width: 6rem;
-  position: absolute;
-  top: 5.5rem;
+    &::before {
+      content: '⚫️';
+      width: 6rem;
+      position: absolute;
+      top: -0.5rem;
+    }
+  }
 }
 
 .string-line {
@@ -86,27 +92,26 @@ img {
   height: 0.2rem;
   position: relative;
   width: 100%;
-}
+  &:hover {
+    background: lightblue;
+  }
 
-.string-line:hover {
-  background: lightblue;
-}
-
-.string-line.selected::after {
-  background: #e52424cc;
-  border-radius: 2rem;
-  content: '';
-  height: 2rem;
-  left: calc(50% - 1rem);
-  position: absolute;
-  top: calc(50% - 1rem);
-  width: 2rem;
+  &.selected::after {
+    background: #e52424cc;
+    border-radius: 2rem;
+    content: '';
+    height: 2rem;
+    left: calc(50% - 1rem);
+    position: absolute;
+    top: calc(50% - 1rem);
+    width: 2rem;
+  }
 }
 
 .pick-note-btn {
   margin-top: 2rem;
-  background: #687ce3;
-  color: white;
+  background: $primary-button-background;
+  color: $primary-button-foreground;
   border: none;
   height: 3rem;
   font-size: 2rem;
@@ -115,19 +120,19 @@ img {
 .selected-note-info {
   margin-top: 2rem;
   text-align: left;
-}
 
-.selected-note-info .title {
-  font-weight: bold;
-}
+  .label {
+    width: 6rem;
+    display: inline-block;
+  }
 
-.selected-note-info .note-name {
-  font-size: 3.5rem;
-  font-weight: bold;
-  text-align: center;
-}
+  .note-name {
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-align: center;
+  }
 
-.selected-note-info .label {
-  width: 6rem;
-  display: inline-block;
+  .title {
+    font-weight: bold;
+  }
 }
