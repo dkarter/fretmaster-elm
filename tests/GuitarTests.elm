@@ -1,8 +1,35 @@
-module GuitarTests exposing (testGetGuitarNoteName, testGetGuitarStringName)
+module GuitarTests exposing (testCreateGuitarNote, testFindAllOctaves, testGetGuitarNoteName, testGetGuitarStringName)
 
 import Expect
-import Guitar exposing (getGuitarNoteName, getGuitarStringName)
+import Guitar exposing (GuitarNote, createGuitarNote, findAllOctaves, getGuitarNoteName, getGuitarStringName)
 import Test exposing (..)
+
+
+testCreateGuitarNote : Test
+testCreateGuitarNote =
+    describe "createGuitarNote"
+        [ test "returns a GuitarNote using the specified parameters" <|
+            \_ ->
+                Expect.equal (GuitarNote 3 4 "G" "B") (createGuitarNote 3 4)
+        ]
+
+
+testFindAllOctaves : Test
+testFindAllOctaves =
+    describe "findAllOctaves"
+        [ test "returns all the octaves for D" <|
+            \_ ->
+                Expect.equal
+                    [ createGuitarNote 1 10
+                    , createGuitarNote 2 3
+                    , createGuitarNote 3 7
+                    , createGuitarNote 4 0
+                    , createGuitarNote 4 12
+                    , createGuitarNote 5 5
+                    , createGuitarNote 6 10
+                    ]
+                    (findAllOctaves "D" 12)
+        ]
 
 
 testGetGuitarStringName : Test

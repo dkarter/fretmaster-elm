@@ -1,4 +1,4 @@
-module Guitar exposing (GuitarNote, createGuitarNote, getGuitarNoteName, getGuitarStringName, isMarkerFret)
+module Guitar exposing (GuitarNote, createGuitarNote, findAllOctaves, getGuitarNoteName, getGuitarStringName, isMarkerFret)
 
 import Array
 import List.Extra exposing (elemIndex)
@@ -23,9 +23,27 @@ createGuitarNote stringNum fretNum =
     }
 
 
+findAllOctaves : Note -> Int -> List GuitarNote
+findAllOctaves note numberOfFrets =
+    let
+        findMatchingNotes ( stringIndex, _ ) =
+            getAllStringNotes (stringIndex + 1) numberOfFrets
+                |> List.filter (\n -> n.noteName == note)
+    in
+    guitarStrings
+        |> Array.fromList
+        |> Array.toIndexedList
+        |> List.concatMap findMatchingNotes
+
+
 guitarStrings : List Note
 guitarStrings =
     [ "E", "B", "G", "D", "A", "E" ]
+
+
+getAllStringNotes stringNum numberOfFrets =
+    List.range 0 numberOfFrets
+        |> List.map (createGuitarNote stringNum)
 
 
 getGuitarStringName : Int -> Note
@@ -41,7 +59,7 @@ getGuitarStringName num =
 
 markerFrets : List Int
 markerFrets =
-    [ 1, 3, 5, 7, 9, 12 ]
+    [ 1, 3, 5, 7, 9, 12, 15, 17, 19, 21, 24 ]
 
 
 isMarkerFret : Int -> Int -> Bool
