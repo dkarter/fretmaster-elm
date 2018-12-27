@@ -3,7 +3,7 @@ module Main exposing (Model, Msg(..), init, main, update, view)
 import Array
 import Browser
 import Debug exposing (log)
-import Guitar exposing (GuitarNote, createGuitarNote, getGuitarStringName, isMarkerFret)
+import Guitar exposing (GuitarNote, createGuitarNote, findAllOctaves, getGuitarStringName, isMarkerFret)
 import Html exposing (Html, button, div, h1, img, span, text)
 import Html.Attributes exposing (class, classList, src)
 import Html.Events exposing (onClick)
@@ -16,12 +16,20 @@ import Random
 
 
 type alias Model =
-    { selectedGuitarNote : GuitarNote, showNoteInfo : Bool }
+    { selectedGuitarNote : GuitarNote
+    , selectedGuitarNoteOctaves : List GuitarNote
+    , showNoteInfo : Bool
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { selectedGuitarNote = createGuitarNote 6 1, showNoteInfo = True }, Cmd.none )
+    ( { selectedGuitarNote = createGuitarNote 6 0
+      , selectedGuitarNoteOctaves = []
+      , showNoteInfo = True
+      }
+    , Cmd.none
+    )
 
 
 isSelected : Model -> Int -> Int -> Bool
@@ -37,6 +45,13 @@ isSelected model stringNum fretNum =
             selectedGuitarNote.stringNum
     in
     selectedStringNum == stringNum && selectedFretNum == fretNum
+
+
+isOctave : Model -> Int -> Int -> Bool
+isOctave model stringNum fretNum =
+    List.any
+        (\note -> note.stringNum == stringNum && note.fretNum == fretNum)
+        model.selectedGuitarNoteOctaves
 
 
 randomString : Random.Generator Int
@@ -69,7 +84,18 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GuitarNoteClicked stringNum fretNum ->
-            ( { model | selectedGuitarNote = createGuitarNote stringNum fretNum, showNoteInfo = True }
+            let
+                guitarNote =
+                    createGuitarNote stringNum fretNum
+
+                octaves =
+                    findAllOctaves guitarNote.noteName 12
+            in
+            ( { model
+                | selectedGuitarNote = guitarNote
+                , selectedGuitarNoteOctaves = octaves
+                , showNoteInfo = True
+              }
             , Cmd.none
             )
 
@@ -77,7 +103,11 @@ update msg model =
             ( model, Random.generate RandomGuitarNoteSelected pickRandomNote )
 
         RandomGuitarNoteSelected guitarNote ->
-            ( { model | selectedGuitarNote = guitarNote, showNoteInfo = False }
+            ( { model
+                | selectedGuitarNote = guitarNote
+                , selectedGuitarNoteOctaves = []
+                , showNoteInfo = False
+              }
             , Cmd.none
             )
 
@@ -101,6 +131,7 @@ renderFrets model stringNum =
                     [ classList
                         [ ( "string-line", True )
                         , ( "selected", isSelected model stringNum fretNum )
+                        , ( "octave", isOctave model stringNum fretNum )
                         ]
                     , onClick (GuitarNoteClicked stringNum fretNum)
                     ]

@@ -41,6 +41,7 @@ guitarStrings =
     [ "E", "B", "G", "D", "A", "E" ]
 
 
+getAllStringNotes : Int -> Int -> List GuitarNote
 getAllStringNotes stringNum numberOfFrets =
     List.range 0 numberOfFrets
         |> List.map (createGuitarNote stringNum)
