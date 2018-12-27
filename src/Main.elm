@@ -1,13 +1,15 @@
-module Main exposing (Model, Msg(..), init, main, update, view)
+module Main exposing (init, main, update, view)
 
 import Array
 import Browser
 import Debug exposing (log)
-import Guitar exposing (GuitarNote, createGuitarNote, findAllOctaves, getGuitarStringName, isMarkerFret)
+import Fretboard
+import Guitar exposing (GuitarNote)
 import Html exposing (Html, button, div, h1, img, input, label, span, text)
 import Html.Attributes exposing (checked, class, classList, src, type_)
 import Html.Events exposing (onCheck, onClick)
-import Music exposing (getNoteNameByIndex, notes)
+import Model exposing (Model)
+import Msg exposing (Msg(..))
 import Random
 
 
@@ -15,46 +17,15 @@ import Random
 ---- MODEL ----
 
 
-type alias Model =
-    { selectedGuitarNote : GuitarNote
-    , selectedGuitarNoteOctaves : List GuitarNote
-    , showNoteInfo : Bool
-    , showOctaves : Bool
-    }
-
-
 init : ( Model, Cmd Msg )
 init =
-    ( { selectedGuitarNote = createGuitarNote 6 0
+    ( { selectedGuitarNote = Guitar.createGuitarNote 6 0
       , selectedGuitarNoteOctaves = []
       , showNoteInfo = True
       , showOctaves = True
       }
     , Cmd.none
     )
-
-
-isSelected : Model -> Int -> Int -> Bool
-isSelected model stringNum fretNum =
-    let
-        selectedGuitarNote =
-            model.selectedGuitarNote
-
-        selectedFretNum =
-            selectedGuitarNote.fretNum
-
-        selectedStringNum =
-            selectedGuitarNote.stringNum
-    in
-    selectedStringNum == stringNum && selectedFretNum == fretNum
-
-
-isOctave : Model -> Int -> Int -> Bool
-isOctave model stringNum fretNum =
-    model.showOctaves
-        && List.any
-            (\note -> note.stringNum == stringNum && note.fretNum == fretNum)
-            model.selectedGuitarNoteOctaves
 
 
 randomString : Random.Generator Int
@@ -68,20 +39,11 @@ randomFret =
 
 
 pickRandomNote =
-    Random.map2 createGuitarNote randomString randomFret
+    Random.map2 Guitar.createGuitarNote randomString randomFret
 
 
 
 ---- UPDATE ----
-
-
-type Msg
-    = GuitarNoteClicked Int Int
-    | PickRandomNote
-    | RandomGuitarNoteSelected GuitarNote
-    | ShowNoteInfo
-    | ShowOctavesChanged Bool
-    | NoOp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -90,11 +52,11 @@ update msg model =
         GuitarNoteClicked stringNum fretNum ->
             let
                 guitarNote =
-                    createGuitarNote stringNum fretNum
+                    Guitar.createGuitarNote stringNum fretNum
 
                 octaves =
                     if model.showOctaves then
-                        findAllOctaves guitarNote.noteName 12
+                        Guitar.findAllOctaves guitarNote.noteName 12
 
                     else
                         []
@@ -133,43 +95,27 @@ update msg model =
 ---- VIEW ----
 
 
-renderFrets : Model -> Int -> List (Html Msg)
-renderFrets model stringNum =
-    let
-        renderFret fretNum =
-            div [ classList [ ( "fret", True ), ( "fret-marker", isMarkerFret fretNum stringNum ) ] ]
-                [ div
-                    [ classList
-                        [ ( "string-line", True )
-                        , ( "selected", isSelected model stringNum fretNum )
-                        , ( "octave", isOctave model stringNum fretNum )
-                        ]
-                    , onClick (GuitarNoteClicked stringNum fretNum)
-                    ]
-                    []
+renderHeader : Html Msg
+renderHeader =
+    h1 [] [ text "Elm Fretboard" ]
+
+
+renderGameControls : Model -> Html Msg
+renderGameControls model =
+    div [ class "game-controls" ]
+        [ label []
+            [ input
+                [ checked model.showOctaves
+                , type_ "checkbox"
+                , onCheck ShowOctavesChanged
                 ]
-    in
-    List.range 1 12
-        |> List.map renderFret
-
-
-renderStrings : Model -> List (Html Msg)
-renderStrings model =
-    List.range 1 6
-        |> List.map (renderString model)
-
-
-renderString : Model -> Int -> Html Msg
-renderString model stringNum =
-    div [ class "string-container" ]
-        [ div [ class "string-name" ] [ text (getGuitarStringName stringNum) ]
-        , div [ class "string" ] (renderFrets model stringNum)
+                []
+            , text "Show Octaves"
+            ]
+        , button
+            [ class "pick-note-btn", onClick PickRandomNote ]
+            [ text "Pick Random Note" ]
         ]
-
-
-renderFretBoard : Model -> Html Msg
-renderFretBoard model =
-    div [ class "fretboard" ] (renderStrings model)
 
 
 renderSelectedNote : Model -> Html Msg
@@ -206,34 +152,11 @@ renderSelectedNote model =
                 ]
 
 
-renderHeader : Html Msg
-renderHeader =
-    h1 [] [ text "Elm Fretboard" ]
-
-
-renderGameControls : Model -> Html Msg
-renderGameControls model =
-    div [ class "game-controls" ]
-        [ label []
-            [ input
-                [ checked model.showOctaves
-                , type_ "checkbox"
-                , onCheck ShowOctavesChanged
-                ]
-                []
-            , text "Show Octaves"
-            ]
-        , button
-            [ class "pick-note-btn", onClick PickRandomNote ]
-            [ text "Pick Random Note" ]
-        ]
-
-
 view : Model -> Html Msg
 view model =
     div [ class "main" ]
         [ renderHeader
-        , renderFretBoard model
+        , Fretboard.render model
         , renderGameControls model
         , renderSelectedNote model
         ]

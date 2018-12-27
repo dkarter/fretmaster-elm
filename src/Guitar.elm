@@ -1,9 +1,16 @@
-module Guitar exposing (GuitarNote, createGuitarNote, findAllOctaves, getGuitarNoteName, getGuitarStringName, isMarkerFret)
+module Guitar exposing
+    ( GuitarNote
+    , createGuitarNote
+    , findAllOctaves
+    , getGuitarNoteName
+    , getGuitarStringName
+    , isMarkerFret
+    )
 
 import Array
 import List.Extra exposing (elemIndex)
 import Maybe exposing (withDefault)
-import Music exposing (Note, getNoteNameByIndex, notes)
+import Music exposing (Note)
 
 
 type alias GuitarNote =
@@ -75,7 +82,7 @@ getGuitarNoteName stringNum fretNum =
             getGuitarStringName stringNum
 
         stringNoteIndex =
-            withDefault 0 (elemIndex stringName notes)
+            withDefault 0 (elemIndex stringName Music.notes)
 
         virtualIndex =
             stringNoteIndex + fretNum
@@ -84,7 +91,7 @@ getGuitarNoteName stringNum fretNum =
             remainderBy noteCount virtualIndex
 
         noteCount =
-            notes |> List.length
+            Music.notes |> List.length
 
         wholeCycles =
             floor (toFloat virtualIndex / toFloat noteCount)
@@ -96,4 +103,4 @@ getGuitarNoteName stringNum fretNum =
             else
                 virtualIndex
     in
-    getNoteNameByIndex selectedNoteIndex
+    Music.getNoteNameByIndex selectedNoteIndex
