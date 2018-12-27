@@ -14,10 +14,6 @@ import Msg exposing (Msg(..))
 import Update
 
 
-
----- VIEW ----
-
-
 renderGameControls : Model -> Html Msg
 renderGameControls model =
     div [ class "game-controls" ]
