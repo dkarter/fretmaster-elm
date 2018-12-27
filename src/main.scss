@@ -27,6 +27,15 @@ img {
   }
 }
 
+.menu {
+  display: flex;
+
+  li {
+    list-style: none;
+    margin-right: 2rem;
+  }
+}
+
 .main {
   display: flex;
   flex-direction: column;

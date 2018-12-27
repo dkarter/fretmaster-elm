@@ -1,31 +1,22 @@
-module Main exposing (init, main, update, view)
+module Main exposing (main, update, view)
 
 import Array
 import Browser
 import Debug exposing (log)
 import Fretboard
 import Guitar exposing (GuitarNote)
+import Header
 import Html exposing (Html, button, div, h1, img, input, label, span, text)
 import Html.Attributes exposing (checked, class, classList, src, type_)
 import Html.Events exposing (onCheck, onClick)
+import Menu
 import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Random
 
 
 
----- MODEL ----
-
-
-init : ( Model, Cmd Msg )
-init =
-    ( { selectedGuitarNote = Guitar.createGuitarNote 6 0
-      , selectedGuitarNoteOctaves = []
-      , showNoteInfo = True
-      , showOctaves = True
-      }
-    , Cmd.none
-    )
+---- GENERATORS ----
 
 
 randomString : Random.Generator Int
@@ -49,6 +40,9 @@ pickRandomNote =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        ChangeGameMode mode ->
+            ( { model | gameMode = mode }, Cmd.none )
+
         GuitarNoteClicked stringNum fretNum ->
             let
                 guitarNote =
@@ -93,11 +87,6 @@ update msg model =
 
 
 ---- VIEW ----
-
-
-renderHeader : Html Msg
-renderHeader =
-    h1 [] [ text "Elm Fretboard" ]
 
 
 renderGameControls : Model -> Html Msg
@@ -155,7 +144,8 @@ renderSelectedNote model =
 view : Model -> Html Msg
 view model =
     div [ class "main" ]
-        [ renderHeader
+        [ Header.render
+        , Menu.render
         , Fretboard.render model
         , renderGameControls model
         , renderSelectedNote model
@@ -170,7 +160,7 @@ main : Program () Model Msg
 main =
     Browser.element
         { view = view
-        , init = \_ -> init
+        , init = \_ -> Model.init
         , update = update
         , subscriptions = always Sub.none
         }
