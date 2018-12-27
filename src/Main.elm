@@ -4,9 +4,9 @@ import Array
 import Browser
 import Debug exposing (log)
 import Guitar exposing (GuitarNote, createGuitarNote, findAllOctaves, getGuitarStringName, isMarkerFret)
-import Html exposing (Html, button, div, h1, img, span, text)
-import Html.Attributes exposing (class, classList, src)
-import Html.Events exposing (onClick)
+import Html exposing (Html, button, div, h1, img, input, label, span, text)
+import Html.Attributes exposing (checked, class, classList, src, type_)
+import Html.Events exposing (onCheck, onClick)
 import Music exposing (getNoteNameByIndex, notes)
 import Random
 
@@ -19,6 +19,7 @@ type alias Model =
     { selectedGuitarNote : GuitarNote
     , selectedGuitarNoteOctaves : List GuitarNote
     , showNoteInfo : Bool
+    , showOctaves : Bool
     }
 
 
@@ -27,6 +28,7 @@ init =
     ( { selectedGuitarNote = createGuitarNote 6 0
       , selectedGuitarNoteOctaves = []
       , showNoteInfo = True
+      , showOctaves = True
       }
     , Cmd.none
     )
@@ -49,9 +51,10 @@ isSelected model stringNum fretNum =
 
 isOctave : Model -> Int -> Int -> Bool
 isOctave model stringNum fretNum =
-    List.any
-        (\note -> note.stringNum == stringNum && note.fretNum == fretNum)
-        model.selectedGuitarNoteOctaves
+    model.showOctaves
+        && List.any
+            (\note -> note.stringNum == stringNum && note.fretNum == fretNum)
+            model.selectedGuitarNoteOctaves
 
 
 randomString : Random.Generator Int
@@ -77,6 +80,7 @@ type Msg
     | PickRandomNote
     | RandomGuitarNoteSelected GuitarNote
     | ShowNoteInfo
+    | ShowOctavesChanged Bool
     | NoOp
 
 
@@ -89,7 +93,11 @@ update msg model =
                     createGuitarNote stringNum fretNum
 
                 octaves =
-                    findAllOctaves guitarNote.noteName 12
+                    if model.showOctaves then
+                        findAllOctaves guitarNote.noteName 12
+
+                    else
+                        []
             in
             ( { model
                 | selectedGuitarNote = guitarNote
@@ -113,6 +121,9 @@ update msg model =
 
         ShowNoteInfo ->
             ( { model | showNoteInfo = True }, Cmd.none )
+
+        ShowOctavesChanged value ->
+            ( { model | showOctaves = value }, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )
@@ -202,9 +213,20 @@ renderHeader =
 
 renderGameControls : Model -> Html Msg
 renderGameControls model =
-    button
-        [ class "pick-note-btn", onClick PickRandomNote ]
-        [ text "Pick Random Note" ]
+    div [ class "game-controls" ]
+        [ label []
+            [ input
+                [ checked model.showOctaves
+                , type_ "checkbox"
+                , onCheck ShowOctavesChanged
+                ]
+                []
+            , text "Show Octaves"
+            ]
+        , button
+            [ class "pick-note-btn", onClick PickRandomNote ]
+            [ text "Pick Random Note" ]
+        ]
 
 
 view : Model -> Html Msg

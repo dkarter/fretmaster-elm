@@ -21,6 +21,12 @@ img {
   max-width: 200px;
 }
 
+.game-controls {
+  & > * {
+    display: block;
+  }
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -98,8 +104,8 @@ img {
     background: lightblue;
   }
 
-  &.octave::after {
-    background: $octave-color;
+  &.octave::after,
+  &.selected::after {
     border-radius: 2rem;
     content: '';
     height: 2rem;
@@ -107,6 +113,10 @@ img {
     position: absolute;
     top: calc(50% - 1rem);
     width: 2rem;
+  }
+
+  &.octave::after {
+    background: $octave-color;
   }
 
   &.selected::after {
