@@ -37,9 +37,9 @@ renderFrets model stringNum =
         renderFret fretNum =
             div [ classList [ ( "fret", True ), ( "fret-marker", Guitar.isMarkerFret fretNum stringNum ) ] ]
                 [ div
-                    [ classList
-                        [ ( "string-line", True )
-                        , ( "selected", isSelected model stringNum fretNum )
+                    [ class "string-line"
+                    , classList
+                        [ ( "selected", isSelected model stringNum fretNum )
                         , ( "octave", isOctave model stringNum fretNum )
                         ]
                     , onClick (GuitarNoteClicked stringNum fretNum)
@@ -60,7 +60,15 @@ renderStrings model =
 renderString : Model -> Int -> Html Msg
 renderString model stringNum =
     div [ class "string-container" ]
-        [ div [ class "string-name" ] [ text (Guitar.getGuitarStringName stringNum) ]
+        [ div
+            [ class "string-name"
+            , classList
+                [ ( "selected", isSelected model stringNum 0 )
+                , ( "octave", isOctave model stringNum 0 )
+                ]
+            , onClick (GuitarNoteClicked stringNum 0)
+            ]
+            [ text (Guitar.getGuitarStringName stringNum) ]
         , div [ class "string" ] (renderFrets model stringNum)
         ]
 
