@@ -17,7 +17,7 @@ randomString =
 
 randomFret : Random.Generator Int
 randomFret =
-    Random.int 1 12
+    Random.int 0 12
 
 
 pickRandomNote =
