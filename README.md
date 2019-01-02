@@ -1,6 +1,6 @@
-# FretBored
+# FretMaster
 
-[![Build Status](https://travis-ci.org/dkarter/fretbored-elm.svg?branch=master)](https://travis-ci.org/dkarter/fretbored-elm)
+[![Build Status](https://travis-ci.org/dkarter/fretmaster-elm.svg?branch=master)](https://travis-ci.org/dkarter/fretmaster-elm)
 
 A guitar fretboard memorization game built in Elm
 
