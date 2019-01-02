@@ -22,26 +22,19 @@ updateInitialModel msg =
 
 testChangeGameMode : Test
 testChangeGameMode =
+    let
+        updatedMode toMode =
+            updateInitialModel (ChangeGameMode toMode)
+                |> .gameMode
+    in
     describe "ChangeGameMode"
         [ test "Sets the game mode to Learn" <|
             \_ ->
-                let
-                    updatedModel =
-                        updateInitialModel (ChangeGameMode Learn)
-                in
-                Expect.equal updatedModel.gameMode Learn
+                Expect.equal (updatedMode Learn) Learn
         , test "Sets the game mode to GuessNotes" <|
             \_ ->
-                let
-                    updatedModel =
-                        updateInitialModel (ChangeGameMode GuessNotes)
-                in
-                Expect.equal updatedModel.gameMode GuessNotes
+                Expect.equal (updatedMode GuessNotes) GuessNotes
         , test "Sets the game mode to FindNotes" <|
             \_ ->
-                let
-                    updatedModel =
-                        updateInitialModel (ChangeGameMode FindNotes)
-                in
-                Expect.equal updatedModel.gameMode FindNotes
+                Expect.equal (updatedMode FindNotes) FindNotes
         ]
