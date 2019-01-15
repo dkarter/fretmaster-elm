@@ -7,6 +7,8 @@ A guitar fretboard memorization game built in Elm
 ![screenshot](img/screenshot.png)
 
 
+[Check it out here](http://fretmaster.doriankarter.com/)
+
 ## Dependencies
 
 This app uses Yarn. Ensure you have it installed.
