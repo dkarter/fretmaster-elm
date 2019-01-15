@@ -1,4 +1,4 @@
-# FretBored
+# FretBored ([🔗](https://fretmaster.doriankarter.com/))
 
 [![Build Status](https://travis-ci.org/dkarter/fretbored-elm.svg?branch=master)](https://travis-ci.org/dkarter/fretbored-elm)
 
@@ -7,7 +7,7 @@ A guitar fretboard memorization game built in Elm
 ![screenshot](img/screenshot.png)
 
 
-[Check it out here](http://fretmaster.doriankarter.com/)
+[Check it out here](https://fretmaster.doriankarter.com/)
 
 ## Dependencies
 
