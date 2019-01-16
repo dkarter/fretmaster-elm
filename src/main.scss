@@ -1,3 +1,4 @@
+$background-color: #E7E7E7;
 $font-color: #293c4b;
 $primary-button-background: #687ce3;
 $primary-button-foreground: #fff;
@@ -10,6 +11,7 @@ $string-name-color: #fff;
 $fret-marker-color: #F8F8DC;
 
 body {
+  background: $background-color;
   color: $font-color;
   font-family: 'Source Sans Pro', 'Trebuchet MS', 'Lucida Grande',
     'Bitstream Vera Sans', 'Helvetica Neue', sans-serif;
