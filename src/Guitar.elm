@@ -4,6 +4,7 @@ module Guitar exposing
     , findAllOctaves
     , getGuitarNoteName
     , getGuitarStringName
+    , guitarStrings
     , isMarkerFret
     )
 
