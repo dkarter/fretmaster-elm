@@ -1,10 +1,10 @@
 module Header exposing (render)
 
-import Html exposing (Html, h1, text)
-import Html.Attributes exposing (class)
-import Msg exposing (Msg(..))
+import Html exposing (Html, img)
+import Html.Attributes exposing (alt, class, src)
+import Msg exposing (Msg)
 
 
 render : Html Msg
 render =
-    h1 [] [ text "FretMaster" ]
+    img [ alt "fretmaster logo", class "logo", src "logo.svg" ] []
