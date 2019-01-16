@@ -1,8 +1,13 @@
 $font-color: #293c4b;
 $primary-button-background: #687ce3;
 $primary-button-foreground: #fff;
-$selected-note-color: RGBA(254, 61, 71, 0.85);
-$octave-color: RGBA(254, 61, 71, 0.4);
+$selected-note-color: RGBA(195, 255, 48, 0.85);
+$octave-color: RGBA(195, 255, 48, 0.4);
+$string-color: #808183;
+$fret-color: #bdbcc0;
+$fretboard-color: #4f0400;
+$string-name-color: #fff;
+$fret-marker-color: #F8F8DC;
 
 body {
   color: $font-color;
@@ -45,6 +50,7 @@ img {
 .fretboard {
   margin-top: 3rem;
   border-left: 1px solid black;
+  background-image: linear-gradient(#5a2523, #5c312f, #470a07);
 }
 
 .string-container {
@@ -60,7 +66,9 @@ img {
   }
 
   & .string-name {
+    color: $string-name-color;
     cursor: pointer;
+    font-weight: 600;
     margin: 0 1rem;
     position: relative;
     width: 1.2rem;
@@ -92,39 +100,38 @@ img {
 
 .fret {
   align-items: center;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+  border-left: 1px solid $fret-color;
+  border-right: 1px solid $fret-color;
   display: flex;
   height: 3rem;
   position: relative;
   width: 6rem;
 
   &.fret-marker::after {
-    content: '⚫️';
-    width: 6rem;
+    content: '';
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background: $fret-marker-color;
     position: absolute;
+    left: calc(50% - 20px / 2);
     top: 2.5rem;
   }
 
   &:nth-child(12).fret-marker {
     &::after {
-      content: '⚫️';
-      width: 6rem;
-      position: absolute;
       top: 5.5rem;
     }
 
     &::before {
-      content: '⚫️';
-      width: 6rem;
-      position: absolute;
+      @extend .fret.fret-marker::after;
       top: -0.5rem;
     }
   }
 }
 
 .string-line {
-  background: darkgrey;
+  background: $string-color;
   border-bottom: 1px solid silver;
   border-top: 1px solid silver;
   cursor: pointer;
