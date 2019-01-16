@@ -18,7 +18,8 @@ render model =
     in
     case showNoteInfo of
         False ->
-            button [ class "show-answer-btn", onClick ShowNoteInfo ] [ text "Show Answer" ]
+            button [ class "show-answer-btn", onClick ShowNoteInfo ]
+                [ text "REVEAL ANSWER" ]
 
         True ->
             div [ class "selected-note-info" ]

@@ -1,14 +1,16 @@
 $background-color: #E7E7E7;
+$danger-button-background: #FFAA91;
+$danger-button-foreground: #fff;
 $font-color: #293c4b;
-$primary-button-background: #687ce3;
+$fret-color: #bdbcc0;
+$fret-marker-color: #F8F8DC;
+$fretboard-color: #4f0400;
+$octave-color: RGBA(195, 255, 48, 0.4);
+$primary-button-background: #7CD6FF;
 $primary-button-foreground: #fff;
 $selected-note-color: RGBA(195, 255, 48, 0.85);
-$octave-color: RGBA(195, 255, 48, 0.4);
 $string-color: #808183;
-$fret-color: #bdbcc0;
-$fretboard-color: #4f0400;
 $string-name-color: #fff;
-$fret-marker-color: #F8F8DC;
 
 body {
   background: $background-color;
@@ -161,13 +163,49 @@ body {
   }
 }
 
-.pick-note-btn {
-  margin-top: 2rem;
-  background: $primary-button-background;
-  color: $primary-button-foreground;
+.btn {
+  border-radius: 0.4rem;
   border: none;
-  height: 3rem;
   font-size: 2rem;
+  font-weight: 500;
+  height: 4rem;
+  margin-top: 2rem;
+}
+
+.primary-btn {
+  @extend .btn;
+  background-color: $primary-button-background;
+  color: $primary-button-foreground;
+
+  &:hover {
+    background-color: $primary-button-background + 10;
+  }
+}
+
+.danger-btn {
+  @extend .btn;
+  background-color: $danger-button-background;
+  color: $danger-button-foreground;
+
+  &:hover {
+    background-color: $danger-button-background + 10;
+  }
+}
+
+.pick-note-btn {
+  @extend .primary-btn;
+  background: url(../public/dice.svg) no-repeat $primary-button-background;
+  background-position: 1rem 0.75rem;
+  background-size: 2.5rem;
+  padding: 0 1.9rem 0 4rem;
+}
+
+.show-answer-btn {
+  @extend .danger-btn;
+  background: url(../public/reveal.svg) no-repeat $danger-button-background;
+  background-position: 0.75rem;
+  background-size: 2.5rem;
+  padding-left: 3.7rem;
 }
 
 .selected-note-info {

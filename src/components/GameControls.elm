@@ -21,5 +21,5 @@ render model =
             ]
         , button
             [ class "pick-note-btn", onClick PickRandomNote ]
-            [ text "Pick Random Note" ]
+            [ text "RANDOM NOTE" ]
         ]
