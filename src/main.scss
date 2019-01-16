@@ -1,12 +1,12 @@
-$background-color: #E7E7E7;
-$danger-button-background: #FFAA91;
+$background-color: #e7e7e7;
+$danger-button-background: #ffaa91;
 $danger-button-foreground: #fff;
 $font-color: #293c4b;
 $fret-color: #bdbcc0;
-$fret-marker-color: #F8F8DC;
+$fret-marker-color: #f8f8dc;
 $fretboard-color: #4f0400;
 $octave-color: RGBA(195, 255, 48, 0.4);
-$primary-button-background: #7CD6FF;
+$primary-button-background: #7cd6ff;
 $primary-button-foreground: #fff;
 $selected-note-color: RGBA(195, 255, 48, 0.85);
 $string-color: #808183;
@@ -131,16 +131,14 @@ body {
 }
 
 .string-line {
-  background: $string-color;
-  border-bottom: 1px solid silver;
-  border-top: 1px solid silver;
+  background-image: linear-gradient(#666666, #d0d0d0, #666666);
   cursor: pointer;
-  height: 0.2rem;
+  height: 0.5rem;
   position: relative;
   width: 100%;
 
   &:hover {
-    background: lightblue;
+    background-image: linear-gradient(#333, #fff, #fff, #333);
   }
 
   &.octave::after,

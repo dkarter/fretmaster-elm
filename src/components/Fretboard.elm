@@ -65,6 +65,24 @@ renderFrets model stringNum =
                 |> List.reverse
                 |> String.concat
 
+        stringThickness =
+            let
+                minStringSize =
+                    0.3
+
+                scale =
+                    20
+            in
+            minStringSize + (toFloat stringNum / scale)
+
+        stringThicknessInRems =
+            stringThickness
+                |> String.fromFloat
+                |> List.singleton
+                |> List.append [ "rem" ]
+                |> List.reverse
+                |> String.concat
+
         renderFret fretNum =
             div
                 [ classList [ ( "fret", True ), ( "fret-marker", Guitar.isMarkerFret fretNum stringNum ) ]
@@ -77,6 +95,7 @@ renderFrets model stringNum =
                         , ( "octave", isOctave model stringNum fretNum )
                         ]
                     , onClick (GuitarNoteClicked stringNum fretNum)
+                    , style "height" stringThicknessInRems
                     ]
                     []
                 ]
