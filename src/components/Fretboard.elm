@@ -64,7 +64,6 @@ renderFrets model stringNum =
                 |> List.append [ "rem" ]
                 |> List.reverse
                 |> String.concat
-                |> Debug.log "fret width"
 
         renderFret fretNum =
             div
