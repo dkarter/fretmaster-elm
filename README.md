@@ -1,6 +1,4 @@
-![FretMaster](public/logo.svg) 
-
-[![Build Status](https://travis-ci.org/dkarter/fretmaster-elm.svg?branch=master)](https://travis-ci.org/dkarter/fretmaster-elm)
+![FretMaster](public/logo.svg) [![Build Status](https://travis-ci.org/dkarter/fretmaster-elm.svg?branch=master)](https://travis-ci.org/dkarter/fretmaster-elm)
 
 A guitar fretboard memorization game built in Elm
 
