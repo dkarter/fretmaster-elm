@@ -1,10 +1,14 @@
 module Header exposing (render)
 
-import Html exposing (Html, img)
+import Html exposing (Html, div, img)
 import Html.Attributes exposing (alt, class, src)
+import Menu
 import Msg exposing (Msg)
 
 
 render : Html Msg
 render =
-    img [ alt "fretmaster logo", class "logo", src "logo.svg" ] []
+    div [ class "header-container" ]
+        [ img [ alt "fretmaster logo", class "logo", src "logo.svg" ] []
+        , Menu.render
+        ]

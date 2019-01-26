@@ -21,15 +21,23 @@ body {
   text-align: center;
 }
 
-.logo {
-  margin: 20px 0;
-  max-width: 200px;
-}
-
 .game-controls {
   & > * {
     display: block;
   }
+}
+
+.header-container {
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 5rem;
+  display: flex;
+  width: 90%;
+}
+
+.logo {
+  margin: 20px 0;
+  max-width: 200px;
 }
 
 .menu {
