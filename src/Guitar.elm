@@ -3,15 +3,19 @@ module Guitar exposing
     , createGuitarNote
     , findAllOctaves
     , getGuitarNoteName
+    , getGuitarNoteWithPitch
     , getGuitarStringName
     , guitarStrings
+    , guitarStringsWithPitches
     , isMarkerFret
+    , playNoteAudio
     )
 
 import Array
+import AudioPorts
 import List.Extra exposing (elemIndex)
 import Maybe exposing (withDefault)
-import Music exposing (Note)
+import Music exposing (Note, ScientificPitchNotation)
 
 
 type alias GuitarNote =
@@ -19,6 +23,7 @@ type alias GuitarNote =
     , fretNum : Int
     , stringName : Note
     , noteName : Note
+    , scientificPitchNotation : ScientificPitchNotation
     }
 
 
@@ -28,6 +33,7 @@ createGuitarNote stringNum fretNum =
     , fretNum = fretNum
     , stringName = getGuitarStringName stringNum
     , noteName = getGuitarNoteName stringNum fretNum
+    , scientificPitchNotation = getGuitarNoteWithPitch stringNum fretNum
     }
 
 
@@ -47,6 +53,39 @@ findAllOctaves note numberOfFrets =
 guitarStrings : List Note
 guitarStrings =
     [ "E", "B", "G", "D", "A", "E" ]
+
+
+guitarStringPitches : List Int
+guitarStringPitches =
+    [ 4, 3, 3, 3, 2, 2 ]
+
+
+guitarStringsWithPitches : List ScientificPitchNotation
+guitarStringsWithPitches =
+    List.map2 Tuple.pair guitarStrings guitarStringPitches
+
+
+getGuitarNoteWithPitch : Int -> Int -> ScientificPitchNotation
+getGuitarNoteWithPitch stringNum fretNum =
+    let
+        octaveCountInRange =
+            List.range 0 fretNum
+                |> List.filter (\fret -> getGuitarNoteName stringNum fret == "C")
+                |> List.length
+
+        stringPitch =
+            guitarStringsWithPitches
+                |> Array.fromList
+                |> Array.get (stringNum - 1)
+                |> withDefault ( "E", -1000 )
+
+        pitch =
+            Tuple.second stringPitch + octaveCountInRange
+
+        noteName =
+            getGuitarNoteName stringNum fretNum
+    in
+    ( noteName, pitch )
 
 
 getAllStringNotes : Int -> Int -> List GuitarNote
@@ -105,3 +144,10 @@ getGuitarNoteName stringNum fretNum =
                 virtualIndex
     in
     Music.getNoteNameByIndex selectedNoteIndex
+
+
+playNoteAudio : GuitarNote -> Cmd msg
+playNoteAudio guitarNote =
+    guitarNote.scientificPitchNotation
+        |> Music.pitchNotationToStr
+        |> AudioPorts.playNote

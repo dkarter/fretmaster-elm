@@ -5,6 +5,7 @@ import Html.Attributes exposing (checked, class, type_)
 import Html.Events exposing (onCheck, onClick)
 import Model exposing (Model)
 import Msg exposing (Msg(..))
+import Music
 
 
 render : Model -> Html Msg
@@ -38,5 +39,9 @@ render model =
                 , div [ class "fret-num" ]
                     [ span [ class "label" ] [ text "Fret #:" ]
                     , text (String.fromInt selectedNote.fretNum)
+                    ]
+                , div [ class "scientific-pitch-notation" ]
+                    [ span [ class "label" ] [ text "SPN:" ]
+                    , text (Music.pitchNotationToStr selectedNote.scientificPitchNotation)
                     ]
                 ]

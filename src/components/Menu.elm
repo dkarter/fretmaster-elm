@@ -1,5 +1,6 @@
 module Menu exposing (render)
 
+import AudioPorts
 import Game exposing (GameMode(..))
 import Html exposing (Html, a, li, text, ul)
 import Html.Attributes exposing (class)

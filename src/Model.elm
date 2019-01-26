@@ -1,5 +1,6 @@
 module Model exposing (Model, init)
 
+import AudioPorts
 import Game exposing (GameMode(..))
 import Guitar exposing (GuitarNote)
 import Msg exposing (Msg)
@@ -22,5 +23,5 @@ init =
       , showOctaves = True
       , gameMode = Learn
       }
-    , Cmd.none
+    , AudioPorts.requestLoadSoundFont "/soundfonts"
     )

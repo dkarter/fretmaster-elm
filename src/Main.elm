@@ -2,7 +2,6 @@ module Main exposing (main)
 
 import Array
 import Browser
-import Debug exposing (log)
 import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Update

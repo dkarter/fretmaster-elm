@@ -1,8 +1,10 @@
 module Update exposing (update)
 
+import AudioPorts
 import Guitar exposing (GuitarNote)
 import Model exposing (Model)
 import Msg exposing (Msg(..))
+import Music
 import Random
 
 
@@ -51,7 +53,7 @@ update msg model =
                 , selectedGuitarNoteOctaves = octaves
                 , showNoteInfo = True
               }
-            , Cmd.none
+            , Guitar.playNoteAudio guitarNote
             )
 
         PickRandomNote ->
@@ -63,7 +65,7 @@ update msg model =
                 , selectedGuitarNoteOctaves = []
                 , showNoteInfo = False
               }
-            , Cmd.none
+            , Guitar.playNoteAudio guitarNote
             )
 
         ShowNoteInfo ->

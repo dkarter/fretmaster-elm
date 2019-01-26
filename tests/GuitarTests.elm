@@ -1,7 +1,23 @@
-module GuitarTests exposing (testCreateGuitarNote, testFindAllOctaves, testGetGuitarNoteName, testGetGuitarStringName)
+module GuitarTests exposing
+    ( testCreateGuitarNote
+    , testFindAllOctaves
+    , testGetGuitarNoteName
+    , testGetGuitarNoteWithPitch
+    , testGetGuitarStringName
+    , testGuitarStringsWithPitches
+    )
 
 import Expect
-import Guitar exposing (GuitarNote, createGuitarNote, findAllOctaves, getGuitarNoteName, getGuitarStringName)
+import Guitar
+    exposing
+        ( GuitarNote
+        , createGuitarNote
+        , findAllOctaves
+        , getGuitarNoteName
+        , getGuitarNoteWithPitch
+        , getGuitarStringName
+        , guitarStringsWithPitches
+        )
 import Test exposing (..)
 
 
@@ -10,7 +26,7 @@ testCreateGuitarNote =
     describe "createGuitarNote"
         [ test "returns a GuitarNote using the specified parameters" <|
             \_ ->
-                Expect.equal (GuitarNote 3 4 "G" "B") (createGuitarNote 3 4)
+                Expect.equal (GuitarNote 3 4 "G" "B" ( "B", 3 )) (createGuitarNote 3 4)
         ]
 
 
@@ -29,6 +45,50 @@ testFindAllOctaves =
                     , createGuitarNote 6 10
                     ]
                     (findAllOctaves "D" 12)
+        ]
+
+
+testGetGuitarNoteWithPitch : Test
+testGetGuitarNoteWithPitch =
+    describe "getGuitarNoteWithPitch"
+        [ test "returns notation for 2nd string, 1st fret" <|
+            \_ ->
+                Expect.equal ( "C", 4 ) (getGuitarNoteWithPitch 2 1)
+        , test "returns notation for 2nd string, 3rd fret" <|
+            \_ ->
+                Expect.equal ( "D", 4 ) (getGuitarNoteWithPitch 2 3)
+        , test "returns notation for 2nd string, 13th fret" <|
+            \_ ->
+                Expect.equal ( "C", 5 ) (getGuitarNoteWithPitch 2 13)
+        , test "returns notation for 2nd string, 25th fret" <|
+            \_ ->
+                Expect.equal ( "C", 6 ) (getGuitarNoteWithPitch 2 25)
+        , test "returns notation for 6th string, 0 fret" <|
+            \_ ->
+                Expect.equal ( "E", 2 ) (getGuitarNoteWithPitch 6 0)
+        , test "returns notation for 6th string, 9th fret" <|
+            \_ ->
+                Expect.equal ( "C#/Db", 3 ) (getGuitarNoteWithPitch 6 9)
+        , test "returns notation for 4th string, 0 fret" <|
+            \_ ->
+                Expect.equal ( "D", 3 ) (getGuitarNoteWithPitch 4 0)
+        ]
+
+
+testGuitarStringsWithPitches : Test
+testGuitarStringsWithPitches =
+    describe "guitarStringsWithPitches"
+        [ test "returns guitar string with scientific pitch notation" <|
+            \_ ->
+                Expect.equal
+                    [ ( "E", 4 )
+                    , ( "B", 3 )
+                    , ( "G", 3 )
+                    , ( "D", 3 )
+                    , ( "A", 2 )
+                    , ( "E", 2 )
+                    ]
+                    guitarStringsWithPitches
         ]
 
 
