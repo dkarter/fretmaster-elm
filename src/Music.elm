@@ -1,4 +1,4 @@
-module Music exposing (Note, ScientificPitchNotation, getNoteNameByIndex, notes, pitchNotationToStr)
+module Music exposing (Note, PitchNotation, getNoteNameByIndex, notes, pitchNotationToStr)
 
 import Array
 import Maybe exposing (withDefault)
@@ -8,7 +8,7 @@ type alias Note =
     String
 
 
-type alias ScientificPitchNotation =
+type alias PitchNotation =
     ( String, Int )
 
 
@@ -17,7 +17,7 @@ notes =
     [ "A", "A#/Bb", "B", "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab" ]
 
 
-pitchNotationToStr : ScientificPitchNotation -> String
+pitchNotationToStr : PitchNotation -> String
 pitchNotationToStr spn =
     let
         normalizedNoteName =

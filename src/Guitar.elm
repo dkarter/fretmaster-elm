@@ -15,7 +15,7 @@ import Array
 import AudioPorts
 import List.Extra exposing (elemIndex)
 import Maybe exposing (withDefault)
-import Music exposing (Note, ScientificPitchNotation)
+import Music exposing (Note, PitchNotation)
 
 
 type alias GuitarNote =
@@ -23,7 +23,7 @@ type alias GuitarNote =
     , fretNum : Int
     , stringName : Note
     , noteName : Note
-    , scientificPitchNotation : ScientificPitchNotation
+    , pitchNotation : PitchNotation
     }
 
 
@@ -33,7 +33,7 @@ createGuitarNote stringNum fretNum =
     , fretNum = fretNum
     , stringName = getGuitarStringName stringNum
     , noteName = getGuitarNoteName stringNum fretNum
-    , scientificPitchNotation = getGuitarNoteWithPitch stringNum fretNum
+    , pitchNotation = getGuitarNoteWithPitch stringNum fretNum
     }
 
 
@@ -60,12 +60,12 @@ guitarStringPitches =
     [ 4, 3, 3, 3, 2, 2 ]
 
 
-guitarStringsWithPitches : List ScientificPitchNotation
+guitarStringsWithPitches : List PitchNotation
 guitarStringsWithPitches =
     List.map2 Tuple.pair guitarStrings guitarStringPitches
 
 
-getGuitarNoteWithPitch : Int -> Int -> ScientificPitchNotation
+getGuitarNoteWithPitch : Int -> Int -> PitchNotation
 getGuitarNoteWithPitch stringNum fretNum =
     let
         octaveCountInRange =
@@ -148,6 +148,6 @@ getGuitarNoteName stringNum fretNum =
 
 playNoteAudio : GuitarNote -> Cmd msg
 playNoteAudio guitarNote =
-    guitarNote.scientificPitchNotation
+    guitarNote.pitchNotation
         |> Music.pitchNotationToStr
         |> AudioPorts.playNote

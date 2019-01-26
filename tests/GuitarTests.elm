@@ -78,7 +78,7 @@ testGetGuitarNoteWithPitch =
 testGuitarStringsWithPitches : Test
 testGuitarStringsWithPitches =
     describe "guitarStringsWithPitches"
-        [ test "returns guitar string with scientific pitch notation" <|
+        [ test "returns guitar string with pitch notation" <|
             \_ ->
                 Expect.equal
                     [ ( "E", 4 )

@@ -40,8 +40,8 @@ render model =
                     [ span [ class "label" ] [ text "Fret #:" ]
                     , text (String.fromInt selectedNote.fretNum)
                     ]
-                , div [ class "scientific-pitch-notation" ]
+                , div [ class "pitch-notation" ]
                     [ span [ class "label" ] [ text "SPN:" ]
-                    , text (Music.pitchNotationToStr selectedNote.scientificPitchNotation)
+                    , text (Music.pitchNotationToStr selectedNote.pitchNotation)
                     ]
                 ]
