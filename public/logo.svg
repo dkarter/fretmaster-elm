@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="371px" height="93px" viewBox="0 0 371 93" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
-    <title>Logo</title>
+<svg width="386px" height="128px" viewBox="0 0 386 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Learn</title>
     <desc>Created with Sketch.</desc>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Guess-Note" transform="translate(-48.000000, -33.000000)">
+        <g id="Learn" transform="translate(-41.000000, -11.000000)">
+            <rect fill="#E7E7E7" x="0" y="0" width="1440" height="1024"></rect>
             <g id="Logo" transform="translate(41.000000, 11.000000)">
                 <g>
                     <path d="M8.39096254,111.314864 C84.0908233,99.443331 199.630412,95.4861534 355.009729,99.443331" id="Path" stroke="#979797" stroke-width="6"></path>
