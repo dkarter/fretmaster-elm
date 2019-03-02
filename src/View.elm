@@ -13,8 +13,7 @@ import SelectedNote
 view : Model -> Html Msg
 view model =
     div [ class "main" ]
-        [ Header.render
+        [ Header.render model
         , Fretboard.render model
         , GameControls.render model
-        , SelectedNote.render model
         ]

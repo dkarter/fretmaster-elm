@@ -1,25 +1,28 @@
 module GameControls exposing (render)
 
+import Game exposing (GameMode(..))
+import GuessNoteGameControls
 import Html exposing (Html, button, div, input, label, text)
 import Html.Attributes exposing (checked, class, type_)
 import Html.Events exposing (onCheck, onClick)
-import Model exposing (Model)
+import LearnGameControls
+import Model exposing (GuessState(..), Model)
 import Msg exposing (Msg(..))
+import Music
 
 
 render : Model -> Html Msg
 render model =
-    div [ class "game-controls" ]
-        [ label []
-            [ input
-                [ checked model.showOctaves
-                , type_ "checkbox"
-                , onCheck ShowOctavesChanged
-                ]
-                []
-            , text "Show Octaves"
-            ]
-        , button
-            [ class "pick-note-btn", onClick PickRandomNote ]
-            [ text "RANDOM NOTE" ]
-        ]
+    let
+        gameControls =
+            case model.gameMode of
+                GuessNotes ->
+                    GuessNoteGameControls.render model
+
+                Learn ->
+                    LearnGameControls.render model
+
+                FindNotes ->
+                    [ div [] [ text "COMING SOON..." ] ]
+    in
+    div [ class "game-controls" ] gameControls

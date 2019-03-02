@@ -1,5 +1,6 @@
 module Fretboard exposing (render)
 
+import Game exposing (GameMode(..))
 import Guitar
 import Html exposing (Html, button, div, h1, img, input, label, span, text)
 import Html.Attributes exposing (checked, class, classList, src, style, type_)
@@ -43,6 +44,9 @@ isOctave model stringNum fretNum =
 renderFrets : Model -> Int -> List (Html Msg)
 renderFrets model stringNum =
     let
+        floatToCssRemString float =
+            String.concat [ String.fromFloat float, "rem" ]
+
         fretWidth fretNum =
             let
                 minFretSize =
@@ -57,13 +61,7 @@ renderFrets model stringNum =
             minFretSize + (reverseFretNum / scale)
 
         fretWidthInRems fretNum =
-            fretNum
-                |> fretWidth
-                |> String.fromFloat
-                |> List.singleton
-                |> List.append [ "rem" ]
-                |> List.reverse
-                |> String.concat
+            floatToCssRemString (fretWidth fretNum)
 
         stringThickness =
             let
@@ -76,12 +74,27 @@ renderFrets model stringNum =
             minStringSize + (toFloat stringNum / scale)
 
         stringThicknessInRems =
-            stringThickness
-                |> String.fromFloat
-                |> List.singleton
-                |> List.append [ "rem" ]
-                |> List.reverse
-                |> String.concat
+            floatToCssRemString stringThickness
+
+        selectedNoteName =
+            model.selectedGuitarNote.noteName
+                |> String.split "/"
+                |> List.head
+                |> Maybe.withDefault "X"
+
+        noteText fretNum =
+            if model.gameMode == Learn && isSelected model stringNum fretNum then
+                [ div [ class "selected-note-name" ] [ text selectedNoteName ] ]
+
+            else
+                []
+
+        fretOnClick fretNum =
+            if model.gameMode == Learn then
+                onClick (GuitarNoteClicked stringNum fretNum)
+
+            else
+                onClick NoOp
 
         renderFret fretNum =
             div
@@ -93,11 +106,12 @@ renderFrets model stringNum =
                     , classList
                         [ ( "selected", isSelected model stringNum fretNum )
                         , ( "octave", isOctave model stringNum fretNum )
+                        , ( "clickable", model.gameMode == Learn )
                         ]
-                    , onClick (GuitarNoteClicked stringNum fretNum)
                     , style "height" stringThicknessInRems
+                    , fretOnClick fretNum
                     ]
-                    []
+                    (noteText fretNum)
                 ]
     in
     List.range 1 fretCount

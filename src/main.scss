@@ -8,9 +8,10 @@ $fretboard-color: #4f0400;
 $octave-color: RGBA(195, 255, 48, 0.4);
 $primary-button-background: #7cd6ff;
 $primary-button-foreground: #fff;
-$selected-note-color: RGBA(195, 255, 48, 0.85);
+$selected-note-color: rgba(195, 255, 48, 0.85);
 $string-color: #808183;
 $string-name-color: #fff;
+$menu-item-active: #d8d8d8;
 
 body {
   background: $background-color;
@@ -24,6 +25,50 @@ body {
 .game-controls {
   & > * {
     display: block;
+  }
+
+  .note-buttons {
+    margin-top: 2rem;
+
+    button {
+      background: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-size: 1.5rem;
+      margin: 0.5rem;
+      width: 4rem;
+      box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.21);
+
+      &[disabled] {
+        opacity: 0.8;
+      }
+
+      &:not(.accidental) {
+        position: relative;
+        top: 5rem;
+      }
+
+      &:not([disabled]):hover {
+        background: darken(#fff, 6);
+      }
+
+      &.accidental {
+        background: #000;
+        color: #fff;
+        position: absolute;
+        margin-left: -2rem;
+
+        &[disabled] {
+          background: lighten(#000, 15);
+          color: darkgrey;
+        }
+
+        &:not([disabled]):hover {
+          background: lighten(#000, 10);
+        }
+      }
+    }
   }
 }
 
@@ -44,9 +89,20 @@ body {
   display: flex;
 
   li {
+    border-radius: 0.5rem;
     cursor: pointer;
+    display: block;
     list-style: none;
     margin-right: 2rem;
+    padding: 1rem;
+
+    &.active {
+      background: $menu-item-active;
+    }
+
+    &:hover {
+      background: darken($menu-item-active, 8);
+    }
   }
 }
 
@@ -141,13 +197,15 @@ body {
 
 .string-line {
   background-image: linear-gradient(#666666, #d0d0d0, #666666);
-  cursor: pointer;
+  box-shadow: -1px 8px 12px 1px rgba(0, 0, 0, 0.2);
   height: 0.5rem;
-  position: relative;
-  width: 100%;
+  position: absolute;
+  width: 102%;
+  z-index: 1;
 
-  &:hover {
+  &.clickable:hover {
     background-image: linear-gradient(#333, #fff, #fff, #333);
+    cursor: pointer;
   }
 
   &.octave::after,
@@ -167,6 +225,14 @@ body {
 
   &.selected::after {
     background: $selected-note-color;
+  }
+
+  .selected-note-name {
+    color: #000;
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+    top: -0.4rem;
   }
 }
 
@@ -216,8 +282,9 @@ body {
 }
 
 .selected-note-info {
-  margin-top: 2rem;
+  margin: 2rem auto;
   text-align: left;
+  width: 7.2rem;
 
   .label {
     width: 6rem;
@@ -232,5 +299,55 @@ body {
 
   .title {
     font-weight: bold;
+  }
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.game-feedback {
+  border-radius: 0 0 0.5rem 0.5rem;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem;
+
+  &.correct {
+    background: #50a350;
+  }
+
+  &.incorrect {
+    animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    background: #cd5858;
+    transform: translate3d(0, 0, 0);
   }
 }

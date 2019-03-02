@@ -1,8 +1,9 @@
 module Update exposing (update)
 
 import AudioPorts
+import Game exposing (GameMode(..))
 import Guitar exposing (GuitarNote)
-import Model exposing (Model)
+import Model exposing (GuessState(..), Model)
 import Msg exposing (Msg(..))
 import Music
 import Random
@@ -26,6 +27,11 @@ pickRandomNote =
     Random.map2 Guitar.createGuitarNote randomString randomFret
 
 
+generateRandomGuitarNote : Cmd Msg
+generateRandomGuitarNote =
+    Random.generate RandomGuitarNoteSelected pickRandomNote
+
+
 
 ---- UPDATE ----
 
@@ -34,7 +40,36 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ChangeGameMode mode ->
-            ( { model | gameMode = mode }, Cmd.none )
+            let
+                showOctaves =
+                    case mode of
+                        Learn ->
+                            True
+
+                        _ ->
+                            False
+
+                cmd =
+                    case mode of
+                        GuessNotes ->
+                            generateRandomGuitarNote
+
+                        _ ->
+                            Cmd.none
+            in
+            ( { model | gameMode = mode, guessState = NotSelected, showOctaves = showOctaves }, cmd )
+
+        GuessNoteButtonClicked note ->
+            let
+                noteMatchesSelectedNote =
+                    model.selectedGuitarNote.noteName == note
+            in
+            case noteMatchesSelectedNote of
+                True ->
+                    ( { model | guesses = [], guessState = Correct }, generateRandomGuitarNote )
+
+                False ->
+                    ( { model | guesses = model.guesses ++ [ note ], guessState = Incorrect }, Cmd.none )
 
         GuitarNoteClicked stringNum fretNum ->
             let
@@ -51,25 +86,20 @@ update msg model =
             ( { model
                 | selectedGuitarNote = guitarNote
                 , selectedGuitarNoteOctaves = octaves
-                , showNoteInfo = True
               }
             , Guitar.playNoteAudio guitarNote
             )
 
         PickRandomNote ->
-            ( model, Random.generate RandomGuitarNoteSelected pickRandomNote )
+            ( model, generateRandomGuitarNote )
 
         RandomGuitarNoteSelected guitarNote ->
             ( { model
                 | selectedGuitarNote = guitarNote
                 , selectedGuitarNoteOctaves = []
-                , showNoteInfo = False
               }
             , Guitar.playNoteAudio guitarNote
             )
-
-        ShowNoteInfo ->
-            ( { model | showNoteInfo = True }, Cmd.none )
 
         ShowOctavesChanged value ->
             ( { model | showOctaves = value }, Cmd.none )
