@@ -2,11 +2,21 @@ module Update exposing (update)
 
 import AudioPorts
 import Game exposing (GameMode(..))
+import GuessNotesGame exposing (GuessState(..))
 import Guitar exposing (GuitarNote)
-import Model exposing (GuessState(..), Model)
+import Model exposing (Model, asGuessNotesGameIn)
 import Msg exposing (Msg(..))
 import Music
 import Random
+
+
+
+---- HELPERS ----
+
+
+toTupleWithCmd : Cmd Msg -> Model -> ( Model, Cmd Msg )
+toTupleWithCmd cmd model =
+    ( model, cmd )
 
 
 
@@ -57,19 +67,29 @@ update msg model =
                         _ ->
                             Cmd.none
             in
-            ( { model | gameMode = mode, guessState = NotSelected, showOctaves = showOctaves }, cmd )
+            ( { model
+                | guessNotesGame = GuessNotesGame.init
+                , gameMode = mode
+                , showOctaves = showOctaves
+              }
+            , cmd
+            )
 
         GuessNoteButtonClicked note ->
-            let
-                noteMatchesSelectedNote =
-                    model.selectedGuitarNote.noteName == note
-            in
-            case noteMatchesSelectedNote of
+            case model.selectedGuitarNote.noteName == note of
                 True ->
-                    ( { model | guesses = [], guessState = Correct }, generateRandomGuitarNote )
+                    model.guessNotesGame
+                        |> GuessNotesGame.setGuesses []
+                        |> GuessNotesGame.setGuessState Correct
+                        |> asGuessNotesGameIn model
+                        |> toTupleWithCmd generateRandomGuitarNote
 
                 False ->
-                    ( { model | guesses = model.guesses ++ [ note ], guessState = Incorrect }, Cmd.none )
+                    model.guessNotesGame
+                        |> GuessNotesGame.appendGuess note
+                        |> GuessNotesGame.setGuessState Incorrect
+                        |> asGuessNotesGameIn model
+                        |> toTupleWithCmd Cmd.none
 
         GuitarNoteClicked stringNum fretNum ->
             let

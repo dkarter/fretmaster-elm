@@ -1,16 +1,21 @@
-module Model exposing (GuessState(..), Model, init)
+module Model exposing (Model, asGuessNotesGameIn, init, setSelectedGuitarNote)
 
 import AudioPorts
 import Game exposing (GameMode(..))
+import GuessNotesGame exposing (GuessNotesGame)
 import Guitar exposing (GuitarNote)
 import Msg exposing (Msg)
 import Music
 
 
-type GuessState
-    = NotSelected
-    | Correct
-    | Incorrect
+setSelectedGuitarNote : GuitarNote -> Model -> Model
+setSelectedGuitarNote guitarNote model =
+    { model | selectedGuitarNote = guitarNote }
+
+
+asGuessNotesGameIn : Model -> GuessNotesGame -> Model
+asGuessNotesGameIn model gameState =
+    { model | guessNotesGame = gameState }
 
 
 type alias Model =
@@ -18,8 +23,7 @@ type alias Model =
     , selectedGuitarNoteOctaves : List GuitarNote
     , showOctaves : Bool
     , gameMode : GameMode
-    , guesses : List Music.Note
-    , guessState : GuessState
+    , guessNotesGame : GuessNotesGame
     }
 
 
@@ -29,8 +33,7 @@ init =
       , selectedGuitarNoteOctaves = []
       , showOctaves = True
       , gameMode = Learn
-      , guesses = []
-      , guessState = NotSelected
+      , guessNotesGame = GuessNotesGame.init
       }
     , AudioPorts.requestLoadSoundFont "/soundfonts"
     )

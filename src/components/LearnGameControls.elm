@@ -1,13 +1,10 @@
 module LearnGameControls exposing (render)
 
-import Game exposing (GameMode(..))
-import GuessNoteGameControls
-import Html exposing (Html, button, div, input, label, text)
+import Html exposing (Html, input, label, text)
 import Html.Attributes exposing (checked, class, type_)
 import Html.Events exposing (onCheck, onClick)
-import Model exposing (GuessState(..), Model)
+import Model exposing (Model)
 import Msg exposing (Msg(..))
-import Music
 import SelectedNote
 
 

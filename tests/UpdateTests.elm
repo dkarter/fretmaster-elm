@@ -2,8 +2,9 @@ module UpdateTests exposing (testChangeGameMode, testGuessNoteButtonClicked)
 
 import Expect
 import Game exposing (GameMode(..))
+import GuessNotesGame exposing (GuessState(..))
 import Guitar
-import Model exposing (GuessState(..), Model)
+import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Test exposing (..)
 import Update
@@ -50,40 +51,54 @@ testGuessNoteButtonClicked =
     describe "GuessNoteButtonClicked"
         [ test "Adds the guess to list of guesses when guesses are empty" <|
             \_ ->
-                Expect.equal [ "A" ] (updateGuess initialModel "A").guesses
+                Expect.equal [ "A" ] (updateGuess initialModel "A").guessNotesGame.guesses
         , test "Adds the guess to list of guesses when guesses exist" <|
             \_ ->
                 let
                     model =
-                        { initialModel | guesses = [ "B" ] }
+                        GuessNotesGame.init
+                            |> GuessNotesGame.setGuesses [ "B" ]
+                            |> Model.asGuessNotesGameIn initialModel
                 in
-                Expect.equal [ "B", "A" ] (updateGuess model "A").guesses
+                Expect.equal [ "B", "A" ] (updateGuess model "A").guessNotesGame.guesses
         , test "Marks guess as correct if the note selected matches (natural)" <|
             \_ ->
                 let
                     model =
-                        { initialModel | selectedGuitarNote = Guitar.createGuitarNote 6 0, guesses = [ "B" ] }
+                        initialModel.guessNotesGame
+                            |> GuessNotesGame.setGuesses [ "B" ]
+                            |> Model.asGuessNotesGameIn initialModel
+                            |> Model.setSelectedGuitarNote (Guitar.createGuitarNote 6 0)
                 in
-                Expect.equal Correct (updateGuess model "E").guessState
+                Expect.equal Correct (updateGuess model "E").guessNotesGame.guessState
         , test "Marks guess as correct if the note selected matches (accidental)" <|
             \_ ->
                 let
                     model =
-                        { initialModel | selectedGuitarNote = Guitar.createGuitarNote 6 2, guesses = [ "B" ] }
+                        initialModel.guessNotesGame
+                            |> GuessNotesGame.setGuesses [ "B" ]
+                            |> Model.asGuessNotesGameIn initialModel
+                            |> Model.setSelectedGuitarNote (Guitar.createGuitarNote 6 2)
                 in
-                Expect.equal Correct (updateGuess model "F#/Gb").guessState
+                Expect.equal Correct (updateGuess model "F#/Gb").guessNotesGame.guessState
         , test "Clears guesses if the note selected matches (natural)" <|
             \_ ->
                 let
                     model =
-                        { initialModel | selectedGuitarNote = Guitar.createGuitarNote 6 0, guesses = [ "B" ] }
+                        initialModel.guessNotesGame
+                            |> GuessNotesGame.setGuesses [ "B" ]
+                            |> Model.asGuessNotesGameIn initialModel
+                            |> Model.setSelectedGuitarNote (Guitar.createGuitarNote 6 0)
                 in
-                Expect.equal [] (updateGuess model "E").guesses
+                Expect.equal [] (updateGuess model "E").guessNotesGame.guesses
         , test "Marks guess as incorrect if the note selected matches (natural)" <|
             \_ ->
                 let
                     model =
-                        { initialModel | selectedGuitarNote = Guitar.createGuitarNote 6 0, guesses = [ "B" ] }
+                        initialModel.guessNotesGame
+                            |> GuessNotesGame.setGuesses [ "B" ]
+                            |> Model.asGuessNotesGameIn initialModel
+                            |> Model.setSelectedGuitarNote (Guitar.createGuitarNote 6 0)
                 in
-                Expect.equal Incorrect (updateGuess model "F").guessState
+                Expect.equal Incorrect (updateGuess model "F").guessNotesGame.guessState
         ]

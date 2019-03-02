@@ -1,10 +1,11 @@
 module GuessNoteGameControls exposing (render)
 
+import GuessNotesGame exposing (GuessState(..))
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (class, classList, disabled)
 import Html.Events exposing (onClick)
 import Maybe
-import Model exposing (GuessState(..), Model)
+import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Music
 
@@ -56,7 +57,7 @@ renderNoteButtons guesses =
 
 renderFeedback : Model -> Html Msg
 renderFeedback model =
-    case model.guessState of
+    case model.guessNotesGame.guessState of
         Correct ->
             div [ class "game-feedback correct" ]
                 [ text "Correct!" ]
@@ -72,5 +73,5 @@ renderFeedback model =
 render : Model -> List (Html Msg)
 render model =
     [ renderFeedback model
-    , renderNoteButtons model.guesses
+    , renderNoteButtons model.guessNotesGame.guesses
     ]
