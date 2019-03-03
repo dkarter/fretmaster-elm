@@ -122,7 +122,20 @@ update msg model =
             )
 
         ShowOctavesChanged value ->
-            ( { model | showOctaves = value }, Cmd.none )
+            let
+                octaves =
+                    if value then
+                        Guitar.findAllOctaves model.selectedGuitarNote.noteName 12
+
+                    else
+                        []
+            in
+            ( { model
+                | showOctaves = value
+                , selectedGuitarNoteOctaves = octaves
+              }
+            , Cmd.none
+            )
 
         NoOp ->
             ( model, Cmd.none )
