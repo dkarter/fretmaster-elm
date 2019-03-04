@@ -126,10 +126,16 @@ body {
   max-width: 92rem;
 }
 
-.fretboard {
+.fretboard-container {
   margin-top: 3rem;
-  border-left: 1px solid black;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.fretboard {
   background-image: linear-gradient(#5a2523, #5c312f, #470a07);
+  border-left: 1px solid black;
+  width: 92rem;
 }
 
 .string-container {

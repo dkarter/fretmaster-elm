@@ -142,4 +142,5 @@ renderString model stringNum =
 
 render : Model -> Html Msg
 render model =
-    div [ class "fretboard" ] (renderStrings model)
+    div [ class "fretboard-container" ]
+        [ div [ class "fretboard" ] (renderStrings model) ]
