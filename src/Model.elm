@@ -31,7 +31,7 @@ init : ( Model, Cmd Msg )
 init =
     ( { selectedGuitarNote = Guitar.createGuitarNote 6 0
       , selectedGuitarNoteOctaves = []
-      , showOctaves = True
+      , showOctaves = False
       , gameMode = Learn
       , guessNotesGame = GuessNotesGame.init
       }

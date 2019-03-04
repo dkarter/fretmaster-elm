@@ -1,23 +1,19 @@
 module LearnGameControls exposing (render)
 
-import Html exposing (Html, input, label, text)
-import Html.Attributes exposing (checked, class, type_)
-import Html.Events exposing (onCheck, onClick)
+import Html exposing (Html, label)
+import Html.Attributes exposing (checked)
+import Html.Events exposing (onCheck)
 import Model exposing (Model)
 import Msg exposing (Msg(..))
 import SelectedNote
+import Toggle
 
 
 render : Model -> List (Html Msg)
 render model =
-    [ label []
-        [ input
-            [ checked model.showOctaves
-            , type_ "checkbox"
-            , onCheck ShowOctavesChanged
-            ]
-            []
-        , text "Show Octaves"
+    [ Toggle.render "Show Octaves"
+        [ onCheck ShowOctavesChanged
+        , checked model.showOctaves
         ]
     , SelectedNote.render model
     ]

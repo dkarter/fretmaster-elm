@@ -12,6 +12,11 @@ $selected-note-color: rgba(195, 255, 48, 0.85);
 $string-color: #808183;
 $string-name-color: #fff;
 $menu-item-active: #d8d8d8;
+$correct-answer-background-color: #50a350;
+$incorrect-answer-background-color: #cd5858;
+$toggle-inactive-background-color: #d6d6d6;
+$toggle-active-background-color: #2196f3;
+$toggle-indicator-color: #fff;
 
 body {
   background: $background-color;
@@ -25,6 +30,10 @@ body {
 .game-controls {
   & > * {
     display: block;
+  }
+
+  &.learn {
+    margin-top: 1rem;
   }
 
   .note-buttons {
@@ -342,12 +351,75 @@ body {
   padding: 0.5rem;
 
   &.correct {
-    background: #50a350;
+    background: $correct-answer-background-color;
   }
 
   &.incorrect {
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-    background: #cd5858;
+    background: $incorrect-answer-background-color;
     transform: translate3d(0, 0, 0);
+  }
+}
+
+.toggle-label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+
+  .label-text {
+    margin-left: 8px;
+  }
+
+  .toggle {
+    isolation: isolate;
+    position: relative;
+    height: 24px;
+    width: 48px;
+    border-radius: 15px;
+    background: $toggle-inactive-background-color;
+    overflow: hidden;
+  }
+
+  .toggle-inner {
+    z-index: 2;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    height: 22px;
+    width: 46px;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+
+  .active-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 200%;
+    background: $toggle-active-background-color;
+    transform: translate3d(-100%, 0, 0);
+    transition: transform 0.05s linear 0.17s;
+  }
+
+  .toggle-state {
+    display: none;
+  }
+
+  .indicator {
+    height: 100%;
+    width: 200%;
+    background: $toggle-indicator-color;
+    border-radius: 13px;
+    transform: translate3d(-75%, 0, 0);
+    transition: transform 0.35s cubic-bezier(0.85, 0.05, 0.18, 1.35);
+  }
+
+  .toggle-state:checked ~ .active-bg {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  .toggle-state:checked ~ .toggle-inner .indicator {
+    transform: translate3d(25%, 0, 0);
   }
 }
