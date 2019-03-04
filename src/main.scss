@@ -86,7 +86,7 @@ body {
   justify-content: space-between;
   margin: 1rem 5rem;
   display: flex;
-  width: 90%;
+  width: 100%;
 }
 
 .logo {
@@ -102,8 +102,11 @@ body {
     cursor: pointer;
     display: block;
     list-style: none;
-    margin-right: 2rem;
     padding: 1rem;
+
+    &:not(:last-child) {
+      margin-right: 2rem;
+    }
 
     &.active {
       background: $menu-item-active;
@@ -116,9 +119,11 @@ body {
 }
 
 .main {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  margin: auto;
+  max-width: 92rem;
 }
 
 .fretboard {
