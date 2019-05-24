@@ -127,9 +127,8 @@ getGuitarNoteName stringNum fretNum =
         virtualIndex =
             stringNoteIndex + fretNum
 
-        remainder =
-            remainderBy noteCount virtualIndex
-
+        -- remainder =
+        --     remainderBy noteCount virtualIndex
         noteCount =
             Music.notes |> List.length
 

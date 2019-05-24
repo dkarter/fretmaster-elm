@@ -16,7 +16,7 @@ const app = Elm.Main.init({
 app.ports.playNote.subscribe(note => app.instrument.play(note));
 app.ports.requestLoadSoundFont.subscribe(loadSoundFont);
 
-function loadSoundFont(dirname) {
+function loadSoundFont() {
   const opts = { soundfont: 'FluidR3_GM' };
   const bank = 'electric_guitar_clean';
 
