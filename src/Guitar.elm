@@ -16,6 +16,7 @@ import AudioPorts
 import List.Extra exposing (elemIndex)
 import Maybe exposing (withDefault)
 import Music exposing (Note, PitchNotation)
+import Utils
 
 
 type alias GuitarNote =
@@ -127,20 +128,8 @@ getGuitarNoteName stringNum fretNum =
         virtualIndex =
             stringNoteIndex + fretNum
 
-        -- remainder =
-        --     remainderBy noteCount virtualIndex
-        noteCount =
-            Music.notes |> List.length
-
-        wholeCycles =
-            floor (toFloat virtualIndex / toFloat noteCount)
-
         selectedNoteIndex =
-            if virtualIndex >= noteCount then
-                virtualIndex - wholeCycles * noteCount
-
-            else
-                virtualIndex
+            Utils.getWrappedIndex Music.notes virtualIndex
     in
     Music.getNoteNameByIndex selectedNoteIndex
 
