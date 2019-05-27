@@ -1,19 +1,25 @@
-module MusicTests exposing (testGetNoteNameByIndex, testPitchNotationToStr)
+module MusicTests exposing (testGetIndexByNoteName, testGetNoteNameByIndex)
 
 import Expect
-import Music exposing (getNoteNameByIndex, pitchNotationToStr)
+import Music exposing (getIndexByNoteName, getNoteNameByIndex)
 import Test exposing (..)
 
 
-testPitchNotationToStr : Test
-testPitchNotationToStr =
-    describe "pitchNotationToStr"
-        [ test "returns SPN as a string" <|
+testGetIndexByNoteName : Test
+testGetIndexByNoteName =
+    describe "getIndexByNoteName"
+        [ test "returns 0 for 'A'" <|
             \_ ->
-                Expect.equal "E2" (pitchNotationToStr ( "E", 2 ))
-        , test "returns SPN with sharps/flats as flats" <|
+                Expect.equal 0 (getIndexByNoteName "A")
+        , test "returns 1 for 'A#/Bb'" <|
             \_ ->
-                Expect.equal "Bb2" (pitchNotationToStr ( "A#/Bb", 2 ))
+                Expect.equal 1 (getIndexByNoteName "A#/Bb")
+        , test "returns 3 for 'C'" <|
+            \_ ->
+                Expect.equal 3 (getIndexByNoteName "C")
+        , test "returns -1 for invalid note" <|
+            \_ ->
+                Expect.equal -1 (getIndexByNoteName "nonesense")
         ]
 
 

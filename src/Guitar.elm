@@ -14,8 +14,9 @@ module Guitar exposing
 import Array
 import AudioPorts
 import List.Extra exposing (elemIndex)
-import Maybe exposing (withDefault)
-import Music exposing (Note, PitchNotation)
+import Maybe
+import Music exposing (Note)
+import Music.PitchNotation as PitchNotation exposing (PitchNotation)
 import Utils
 
 
@@ -63,7 +64,7 @@ guitarStringPitches =
 
 guitarStringsWithPitches : List PitchNotation
 guitarStringsWithPitches =
-    List.map2 Tuple.pair guitarStrings guitarStringPitches
+    List.map2 PitchNotation.build guitarStrings guitarStringPitches
 
 
 getGuitarNoteWithPitch : Int -> Int -> PitchNotation
@@ -78,15 +79,15 @@ getGuitarNoteWithPitch stringNum fretNum =
             guitarStringsWithPitches
                 |> Array.fromList
                 |> Array.get (stringNum - 1)
-                |> withDefault ( "E", -1000 )
+                |> Maybe.withDefault (PitchNotation.build "Err!" -1000)
 
         pitch =
-            Tuple.second stringPitch + octaveCountInRange
+            PitchNotation.getPitch stringPitch + octaveCountInRange
 
         noteName =
             getGuitarNoteName stringNum fretNum
     in
-    ( noteName, pitch )
+    PitchNotation.build noteName pitch
 
 
 getAllStringNotes : Int -> Int -> List GuitarNote
@@ -103,7 +104,7 @@ getGuitarStringName num =
                 |> Array.fromList
                 |> Array.get (num - 1)
     in
-    withDefault "" guitarString
+    Maybe.withDefault "" guitarString
 
 
 markerFrets : List Int
@@ -123,7 +124,7 @@ getGuitarNoteName stringNum fretNum =
             getGuitarStringName stringNum
 
         stringNoteIndex =
-            withDefault 0 (elemIndex stringName Music.notes)
+            Maybe.withDefault 0 (elemIndex stringName Music.notes)
 
         virtualIndex =
             stringNoteIndex + fretNum
@@ -137,5 +138,5 @@ getGuitarNoteName stringNum fretNum =
 playNoteAudio : GuitarNote -> Cmd msg
 playNoteAudio guitarNote =
     guitarNote.pitchNotation
-        |> Music.pitchNotationToStr
+        |> PitchNotation.toString
         |> AudioPorts.playNote

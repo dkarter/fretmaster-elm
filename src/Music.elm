@@ -1,8 +1,8 @@
-module Music exposing (Note, PitchNotation, getIndexByNoteName, getNoteNameByIndex, notes, pitchNotationToStr)
+module Music exposing (Note, getIndexByNoteName, getNoteNameByIndex, notes)
 
 import Array
 import List.Extra
-import Maybe exposing (withDefault)
+import Maybe
 import Music.ScaleClass exposing (ScaleClass)
 import Utils
 
@@ -11,33 +11,9 @@ type alias Note =
     String
 
 
-type alias PitchNotation =
-    ( String, Int )
-
-
 notes : List Note
 notes =
     [ "A", "A#/Bb", "B", "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab" ]
-
-
-pitchNotationToStr : PitchNotation -> String
-pitchNotationToStr spn =
-    let
-        normalizedNoteName =
-            spn
-                |> Tuple.first
-                |> String.split "/"
-                |> List.reverse
-                |> List.head
-                |> withDefault "ERROR!"
-
-        pitchString =
-            spn
-                |> Tuple.second
-                |> String.fromInt
-    in
-    [ normalizedNoteName, pitchString ]
-        |> String.join ""
 
 
 getIndexByNoteName : Note -> Int
@@ -47,7 +23,7 @@ getIndexByNoteName note =
             notes
                 |> List.Extra.elemIndex note
     in
-    withDefault -1 index
+    Maybe.withDefault -1 index
 
 
 getNoteNameByIndex : Int -> Note
@@ -58,4 +34,4 @@ getNoteNameByIndex index =
                 |> Array.fromList
                 |> Array.get index
     in
-    withDefault "Err!" noteName
+    Maybe.withDefault "Err!" noteName

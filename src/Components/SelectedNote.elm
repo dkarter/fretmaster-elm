@@ -5,7 +5,7 @@ import Html.Attributes exposing (checked, class, type_)
 import Html.Events exposing (onCheck, onClick)
 import Model exposing (Model)
 import Msg exposing (Msg(..))
-import Music
+import Music.PitchNotation as PitchNotation
 
 
 render : Model -> Html Msg
@@ -33,6 +33,6 @@ render model =
             ]
         , div [ class "pitch-notation" ]
             [ span [ class "label" ] [ text "SPN:" ]
-            , text (Music.pitchNotationToStr selectedNote.pitchNotation)
+            , text (PitchNotation.toString selectedNote.pitchNotation)
             ]
         ]
