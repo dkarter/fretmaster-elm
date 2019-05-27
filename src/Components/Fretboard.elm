@@ -1,6 +1,6 @@
 module Fretboard exposing (render)
 
-import Game exposing (GameMode(..))
+import Game
 import Guitar
 import Html exposing (Html, button, div, h1, img, input, label, span, text)
 import Html.Attributes exposing (checked, class, classList, src, style, type_)
@@ -83,14 +83,14 @@ renderFrets model stringNum =
                 |> Maybe.withDefault "X"
 
         noteText fretNum =
-            if model.gameMode == Learn && isSelected model stringNum fretNum then
+            if model.gameMode == Game.LearnNotes && isSelected model stringNum fretNum then
                 [ div [ class "selected-note-name" ] [ text selectedNoteName ] ]
 
             else
                 []
 
         fretOnClick fretNum =
-            if model.gameMode == Learn then
+            if model.gameMode == Game.LearnNotes then
                 onClick (GuitarNoteClicked stringNum fretNum)
 
             else
@@ -106,7 +106,7 @@ renderFrets model stringNum =
                     , classList
                         [ ( "selected", isSelected model stringNum fretNum )
                         , ( "octave", isOctave model stringNum fretNum )
-                        , ( "clickable", model.gameMode == Learn )
+                        , ( "clickable", model.gameMode == Game.LearnNotes )
                         ]
                     , style "height" stringThicknessInRems
                     , fretOnClick fretNum

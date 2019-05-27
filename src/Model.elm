@@ -1,9 +1,10 @@
 module Model exposing (Model, asGuessNotesGameIn, init, setSelectedGuitarNote)
 
 import AudioPorts
-import Game exposing (GameMode(..))
+import Game exposing (GameMode)
 import GuessNotesGame exposing (GuessNotesGame)
 import Guitar exposing (GuitarNote)
+import LearnScalesGame exposing (LearnScalesGame)
 import Msg exposing (Msg)
 import Music
 
@@ -24,6 +25,7 @@ type alias Model =
     , showOctaves : Bool
     , gameMode : GameMode
     , guessNotesGame : GuessNotesGame
+    , learnScalesGame : LearnScalesGame
     }
 
 
@@ -32,8 +34,9 @@ init =
     ( { selectedGuitarNote = Guitar.createGuitarNote 6 0
       , selectedGuitarNoteOctaves = []
       , showOctaves = False
-      , gameMode = Learn
+      , gameMode = Game.LearnNotes
       , guessNotesGame = GuessNotesGame.init
+      , learnScalesGame = LearnScalesGame.init
       }
     , AudioPorts.requestLoadSoundFont "/soundfonts"
     )

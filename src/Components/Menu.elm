@@ -16,7 +16,7 @@ render model =
             classList [ ( "active", model.gameMode == mode ) ]
     in
     ul [ class "menu" ]
-        [ li [ activeClass Learn, onClick (ChangeGameMode Learn) ] [ text "Learn" ]
+        [ li [ activeClass LearnNotes, onClick (ChangeGameMode LearnNotes) ] [ text "Learn Notes" ]
         , li [ activeClass GuessNotes, onClick (ChangeGameMode GuessNotes) ] [ text "Guess" ]
-        , li [ activeClass FindNotes, onClick (ChangeGameMode FindNotes) ] [ text "Find" ]
+        , li [ activeClass LearnScales, onClick (ChangeGameMode LearnScales) ] [ text "Learn Scales" ]
         ]

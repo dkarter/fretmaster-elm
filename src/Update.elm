@@ -1,7 +1,7 @@
 module Update exposing (update)
 
 import AudioPorts
-import Game exposing (GameMode(..))
+import Game
 import GuessNotesGame exposing (GuessState(..))
 import Guitar exposing (GuitarNote)
 import Model exposing (Model, asGuessNotesGameIn)
@@ -53,7 +53,7 @@ update msg model =
             let
                 showOctaves =
                     case mode of
-                        Learn ->
+                        Game.LearnNotes ->
                             True
 
                         _ ->
@@ -61,7 +61,7 @@ update msg model =
 
                 cmd =
                     case mode of
-                        GuessNotes ->
+                        Game.GuessNotes ->
                             generateRandomGuitarNote
 
                         _ ->

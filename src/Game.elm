@@ -2,6 +2,7 @@ module Game exposing (GameMode(..))
 
 
 type GameMode
-    = Learn
+    = LearnNotes
+    | LearnScales
     | GuessNotes
     | FindNotes

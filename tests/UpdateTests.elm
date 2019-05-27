@@ -1,7 +1,7 @@
 module UpdateTests exposing (testChangeGameMode, testGuessNoteButtonClicked)
 
 import Expect
-import Game exposing (GameMode(..))
+import Game
 import GuessNotesGame exposing (GuessState(..))
 import Guitar
 import Model exposing (Model)
@@ -30,15 +30,15 @@ testChangeGameMode =
                 |> .gameMode
     in
     describe "ChangeGameMode"
-        [ test "Sets the game mode to Learn" <|
+        [ test "Sets the game mode to LearnNotes" <|
             \_ ->
-                Expect.equal (updatedMode Learn) Learn
+                Expect.equal (updatedMode Game.LearnNotes) Game.LearnNotes
         , test "Sets the game mode to GuessNotes" <|
             \_ ->
-                Expect.equal (updatedMode GuessNotes) GuessNotes
+                Expect.equal (updatedMode Game.GuessNotes) Game.GuessNotes
         , test "Sets the game mode to FindNotes" <|
             \_ ->
-                Expect.equal (updatedMode FindNotes) FindNotes
+                Expect.equal (updatedMode Game.FindNotes) Game.FindNotes
         ]
 
 

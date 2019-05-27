@@ -1,9 +1,12 @@
 {
-  "name": "FretMaster",
+  "name": "fret-master",
   "scripts": {
-    "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "build": "yarn build-css && elm-app build"
+    "start": "elm-app start",
+    "test": "elm-app test",
+    "test:watch": "elm-app test --watch",
+    "css:build": "node-sass-chokidar src/ -o src/",
+    "css:watch": "yarn css:build && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "build": "yarn css:build && elm-app build"
   },
   "version": "1.0.0",
   "main": "index.js",

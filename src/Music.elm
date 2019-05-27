@@ -1,8 +1,9 @@
-module Music exposing (Note, PitchNotation, ScaleType(..), getNoteNameByIndex, getScaleNotes, notes, pitchNotationToStr)
+module Music exposing (Note, PitchNotation, getIndexByNoteName, getNoteNameByIndex, notes, pitchNotationToStr)
 
 import Array
 import List.Extra
 import Maybe exposing (withDefault)
+import Music.ScaleClass exposing (ScaleClass)
 import Utils
 
 
@@ -10,83 +11,8 @@ type alias Note =
     String
 
 
-type alias Interval =
-    String
-
-
 type alias PitchNotation =
     ( String, Int )
-
-
-type ScaleType
-    = Major
-    | Minor
-    | Dorian
-    | Phrygian
-    | Lydian
-    | Mixolydian
-      -- | Locrian
-    | HarmonicMinor
-    | MelodicMinor
-    | MajorPentatonic
-    | MinorPentatonic
-
-
-scaleFormula : ScaleType -> List Interval
-scaleFormula scaleType =
-    case scaleType of
-        Major ->
-            [ "1", "2", "3", "4", "5", "6", "7" ]
-
-        Minor ->
-            [ "1", "2", "b3", "4", "5", "b6", "b7" ]
-
-        Dorian ->
-            [ "1", "2", "b3", "4", "5", "6", "b7" ]
-
-        Phrygian ->
-            [ "1", "b2", "b3", "4", "5", "b6", "b7" ]
-
-        Lydian ->
-            [ "1", "2", "3", "#4", "5", "6", "7" ]
-
-        Mixolydian ->
-            [ "1", "2", "3", "4", "5", "6", "b7" ]
-
-        -- Locrian ->
-        --     [ "1", "b2", "b3", "4", "b5", "b6", "b7" ]
-        MajorPentatonic ->
-            [ "1", "2", "3", "5", "6" ]
-
-        MinorPentatonic ->
-            [ "1", "b3", "4", "5", "b7" ]
-
-        _ ->
-            -- not implemented yet
-            []
-
-
-intervalToInt : Interval -> Int
-intervalToInt interval =
-    [ "1", "b2", "2", "b3", "3", "4", "#4", "5", "b6", "6", "b7", "7" ]
-        |> List.Extra.elemIndex interval
-        |> Maybe.withDefault -1
-
-
-getScaleNotes : Note -> ScaleType -> List Note
-getScaleNotes key scaleType =
-    let
-        formula =
-            scaleFormula scaleType
-
-        keyIndex =
-            getIndexByNoteName key
-
-        intervalToNote interval =
-            getNoteNameByIndex (Utils.getWrappedIndex notes (intervalToInt interval + keyIndex))
-    in
-    formula
-        |> List.map intervalToNote
 
 
 notes : List Note

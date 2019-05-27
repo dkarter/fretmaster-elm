@@ -1,6 +1,12 @@
 {
   "type": "application",
-  "source-directories": ["src", "src/components", "src/ports"],
+  "source-directories": [
+    "src",
+    "src/Components",
+    "src/Pages",
+    "src/Music",
+    "src/Ports"
+  ],
   "elm-version": "0.19.0",
   "dependencies": {
     "direct": {
