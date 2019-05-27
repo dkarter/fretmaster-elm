@@ -1,4 +1,4 @@
-module LearnNotesPage exposing (render)
+module Pages.LearnNotesPage exposing (render)
 
 import Fretboard
 import Html exposing (Html, div)

@@ -1,4 +1,4 @@
-module NotFoundPage exposing (render)
+module Pages.NotFoundPage exposing (render)
 
 import Html exposing (Html, div, text)
 import Html.Attributes exposing (class)

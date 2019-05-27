@@ -1,4 +1,4 @@
-module LearnScalesPage exposing (render)
+module Pages.LearnScalesPage exposing (render)
 
 import Fretboard
 import Html exposing (Html, div, text)

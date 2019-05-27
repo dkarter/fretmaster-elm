@@ -1,4 +1,4 @@
-module GuessNotesPage exposing (render)
+module Pages.GuessNotesPage exposing (render)
 
 import Fretboard
 import GuessNoteGameControls

@@ -1,15 +1,15 @@
 module View exposing (view)
 
 import Game
-import GuessNotesPage
 import Header
 import Html exposing (Html, div)
 import Html.Attributes exposing (class)
-import LearnNotesPage
-import LearnScalesPage
 import Model exposing (Model)
 import Msg exposing (Msg(..))
-import NotFoundPage
+import Pages.GuessNotesPage as GuessNotesPage
+import Pages.LearnNotesPage as LearnNotesPage
+import Pages.LearnScalesPage as LearnScalesPage
+import Pages.NotFoundPage as NotFoundPage
 import SelectedNote
 
 
