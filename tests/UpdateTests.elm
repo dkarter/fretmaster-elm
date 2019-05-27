@@ -51,7 +51,7 @@ testGuessNoteButtonClicked =
     describe "GuessNoteButtonClicked"
         [ test "Adds the guess to list of guesses when guesses are empty" <|
             \_ ->
-                Expect.equal [ "A" ] (updateGuess initialModel "A").guessNotesGame.guesses
+                Expect.equal [ "A" ] (GuessNotesGame.getGuesses (updateGuess initialModel "A").guessNotesGame)
         , test "Adds the guess to list of guesses when guesses exist" <|
             \_ ->
                 let
@@ -59,8 +59,11 @@ testGuessNoteButtonClicked =
                         GuessNotesGame.init
                             |> GuessNotesGame.setGuesses [ "B" ]
                             |> Model.asGuessNotesGameIn initialModel
+
+                    guesses =
+                        GuessNotesGame.getGuesses (updateGuess model "A").guessNotesGame
                 in
-                Expect.equal [ "B", "A" ] (updateGuess model "A").guessNotesGame.guesses
+                Expect.equal [ "B", "A" ] guesses
         , test "Marks guess as correct if the note selected matches (natural)" <|
             \_ ->
                 let
@@ -69,8 +72,11 @@ testGuessNoteButtonClicked =
                             |> GuessNotesGame.setGuesses [ "B" ]
                             |> Model.asGuessNotesGameIn initialModel
                             |> Model.setSelectedGuitarNote (Guitar.createGuitarNote 6 0)
+
+                    guessState =
+                        GuessNotesGame.getGuessState (updateGuess model "E").guessNotesGame
                 in
-                Expect.equal Correct (updateGuess model "E").guessNotesGame.guessState
+                Expect.equal Correct guessState
         , test "Marks guess as correct if the note selected matches (accidental)" <|
             \_ ->
                 let
@@ -79,8 +85,11 @@ testGuessNoteButtonClicked =
                             |> GuessNotesGame.setGuesses [ "B" ]
                             |> Model.asGuessNotesGameIn initialModel
                             |> Model.setSelectedGuitarNote (Guitar.createGuitarNote 6 2)
+
+                    guessState =
+                        GuessNotesGame.getGuessState (updateGuess model "F#/Gb").guessNotesGame
                 in
-                Expect.equal Correct (updateGuess model "F#/Gb").guessNotesGame.guessState
+                Expect.equal Correct guessState
         , test "Clears guesses if the note selected matches (natural)" <|
             \_ ->
                 let
@@ -89,8 +98,11 @@ testGuessNoteButtonClicked =
                             |> GuessNotesGame.setGuesses [ "B" ]
                             |> Model.asGuessNotesGameIn initialModel
                             |> Model.setSelectedGuitarNote (Guitar.createGuitarNote 6 0)
+
+                    guesses =
+                        GuessNotesGame.getGuesses (updateGuess initialModel "E").guessNotesGame
                 in
-                Expect.equal [] (updateGuess model "E").guessNotesGame.guesses
+                Expect.equal [] guesses
         , test "Marks guess as incorrect if the note selected matches (natural)" <|
             \_ ->
                 let
@@ -99,6 +111,9 @@ testGuessNoteButtonClicked =
                             |> GuessNotesGame.setGuesses [ "B" ]
                             |> Model.asGuessNotesGameIn initialModel
                             |> Model.setSelectedGuitarNote (Guitar.createGuitarNote 6 0)
+
+                    guessState =
+                        GuessNotesGame.getGuessState (updateGuess initialModel "F").guessNotesGame
                 in
-                Expect.equal Incorrect (updateGuess model "F").guessNotesGame.guessState
+                Expect.equal Incorrect guessState
         ]

@@ -3,6 +3,9 @@ module GuessNotesGame exposing
     , GuessNotesGame
     , GuessState(..)
     , appendGuess
+    , getGameState
+    , getGuessState
+    , getGuesses
     , init
     , setGameState
     , setGuessState
@@ -23,35 +26,52 @@ type GameState
     | NotStarted
 
 
-type alias GuessNotesGame =
-    { guesses : List Music.Note
-    , guessState : GuessState
-    , gameState : GameState
-    }
+type GuessNotesGame
+    = GuessNotesGame
+        { guesses : List Music.Note
+        , guessState : GuessState
+        , gameState : GameState
+        }
 
 
 appendGuess : Music.Note -> GuessNotesGame -> GuessNotesGame
-appendGuess note guessNotesGame =
-    { guessNotesGame | guesses = guessNotesGame.guesses ++ [ note ] }
+appendGuess note (GuessNotesGame guessNotesGame) =
+    GuessNotesGame { guessNotesGame | guesses = guessNotesGame.guesses ++ [ note ] }
 
 
 setGuesses : List Music.Note -> GuessNotesGame -> GuessNotesGame
-setGuesses guesses guessNotesGame =
-    { guessNotesGame | guesses = guesses }
+setGuesses guesses (GuessNotesGame guessNotesGame) =
+    GuessNotesGame { guessNotesGame | guesses = guesses }
 
 
 setGameState : GameState -> GuessNotesGame -> GuessNotesGame
-setGameState gameState guessNotesGame =
-    { guessNotesGame | gameState = gameState }
+setGameState gameState (GuessNotesGame guessNotesGame) =
+    GuessNotesGame { guessNotesGame | gameState = gameState }
 
 
 setGuessState : GuessState -> GuessNotesGame -> GuessNotesGame
-setGuessState guessState guessNotesGame =
-    { guessNotesGame | guessState = guessState }
+setGuessState guessState (GuessNotesGame guessNotesGame) =
+    GuessNotesGame { guessNotesGame | guessState = guessState }
+
+
+getGuesses : GuessNotesGame -> List Music.Note
+getGuesses (GuessNotesGame { guesses }) =
+    guesses
+
+
+getGameState : GuessNotesGame -> GameState
+getGameState (GuessNotesGame { gameState }) =
+    gameState
+
+
+getGuessState : GuessNotesGame -> GuessState
+getGuessState (GuessNotesGame { guessState }) =
+    guessState
 
 
 init =
-    { guesses = []
-    , guessState = NotSelected
-    , gameState = NotStarted
-    }
+    GuessNotesGame
+        { guesses = []
+        , guessState = NotSelected
+        , gameState = NotStarted
+        }

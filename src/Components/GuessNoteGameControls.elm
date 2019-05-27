@@ -57,7 +57,7 @@ renderNoteButtons guesses =
 
 renderFeedback : Model -> Html Msg
 renderFeedback model =
-    case model.guessNotesGame.guessState of
+    case GuessNotesGame.getGuessState model.guessNotesGame of
         Correct ->
             div [ class "game-feedback correct" ]
                 [ text "Correct!" ]
@@ -73,5 +73,5 @@ renderFeedback model =
 render : Model -> List (Html Msg)
 render model =
     [ renderFeedback model
-    , renderNoteButtons model.guessNotesGame.guesses
+    , renderNoteButtons (GuessNotesGame.getGuesses model.guessNotesGame)
     ]
