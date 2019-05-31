@@ -26,6 +26,7 @@ type alias Model =
     , gameMode : GameMode
     , guessNotesGame : GuessNotesGame
     , learnScalesGame : LearnScalesGame
+    , highlightedGuitarNotes : Guitar.HighlightedNotes
     }
 
 
@@ -37,6 +38,7 @@ init =
       , gameMode = Game.LearnNotes
       , guessNotesGame = GuessNotesGame.init
       , learnScalesGame = LearnScalesGame.init
+      , highlightedGuitarNotes = []
       }
     , AudioPorts.requestLoadSoundFont "/soundfonts"
     )

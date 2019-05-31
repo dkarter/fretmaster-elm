@@ -4,6 +4,7 @@ import AudioPorts
 import Game
 import GuessNotesGame exposing (GuessState(..))
 import Guitar exposing (GuitarNote)
+import LearnScalesGame
 import Model exposing (Model, asGuessNotesGameIn)
 import Msg exposing (Msg(..))
 import Music
@@ -50,30 +51,36 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ChangeGameMode mode ->
-            let
-                showOctaves =
-                    case mode of
-                        Game.LearnNotes ->
-                            True
+            case mode of
+                Game.GuessNotes ->
+                    let
+                        updatedModel =
+                            { model
+                                | guessNotesGame = GuessNotesGame.init
+                                , gameMode = mode
+                                , showOctaves = False
+                            }
+                    in
+                    ( updatedModel, generateRandomGuitarNote )
 
-                        _ ->
-                            False
+                Game.LearnNotes ->
+                    ( { model | gameMode = mode, showOctaves = True }, Cmd.none )
 
-                cmd =
-                    case mode of
-                        Game.GuessNotes ->
-                            generateRandomGuitarNote
+                Game.LearnScales ->
+                    let
+                        updatedModel =
+                            { model
+                                | learnScalesGame = LearnScalesGame.init
+                                , gameMode = mode
+                                , showOctaves = False
+                                , highlightedGuitarNotes =
+                                    LearnScalesGame.highlightedGuitarNotes LearnScalesGame.init
+                            }
+                    in
+                    ( updatedModel, Cmd.none )
 
-                        _ ->
-                            Cmd.none
-            in
-            ( { model
-                | guessNotesGame = GuessNotesGame.init
-                , gameMode = mode
-                , showOctaves = showOctaves
-              }
-            , cmd
-            )
+                _ ->
+                    ( { model | gameMode = mode }, Cmd.none )
 
         GuessNoteButtonClicked note ->
             case model.selectedGuitarNote.noteName == note of
