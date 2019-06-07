@@ -18,5 +18,7 @@ render model =
     ul [ class "menu" ]
         [ li [ activeClass Learn, onClick (ChangeGameMode Learn) ] [ text "Learn" ]
         , li [ activeClass GuessNotes, onClick (ChangeGameMode GuessNotes) ] [ text "Guess" ]
+        , li [ activeClass GuessChord, onClick (ChangeGameMode GuessChord) ] [ text "Guess Chord" ]
+        , li [ activeClass ShowChord, onClick (ChangeGameMode ShowChord) ] [ text "Show Chord" ]
         , li [ activeClass FindNotes, onClick (ChangeGameMode FindNotes) ] [ text "Find" ]
         ]
