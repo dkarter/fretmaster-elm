@@ -1,15 +1,14 @@
 module Msg exposing (Msg(..))
 
 import Game exposing (GameMode)
+import GuessNotesGame exposing (GuessNotesGame)
 import Guitar
-import Music
+import LearnScalesGame exposing (LearnScalesGame)
 
 
 type Msg
     = ChangeGameMode GameMode
-    | GuessNoteButtonClicked Music.Note
-    | GuitarNoteClicked Int Int
+    | UpdateGameState GameMode
     | NoOp
     | PickRandomNote
     | RandomGuitarNoteSelected Guitar.GuitarNote
-    | ShowOctavesChanged Bool

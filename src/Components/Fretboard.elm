@@ -1,48 +1,79 @@
-module Fretboard exposing (render)
+module Fretboard exposing
+    ( fretboard
+    , toHtml
+    , withHighlightedNotes
+    , withNoteNameVisible
+    , withNotesClickable
+    , withOnClick
+    )
 
-import Game
 import Guitar
-import Html exposing (Html, button, div, h1, img, input, label, span, text)
-import Html.Attributes exposing (checked, class, classList, src, style, type_)
-import Html.Events exposing (onCheck, onClick)
-import Model exposing (Model)
+import HighlightedNotes exposing (HighlightedNotes)
+import Html exposing (Html, div, text)
+import Html.Attributes exposing (class, classList, style)
+import Html.Events exposing (onClick)
 import Msg exposing (Msg(..))
 
 
+type alias Options =
+    { highlightedNotes : HighlightedNotes
+    , onClick : Guitar.GuitarNote -> Msg
+    , notesClickable : Bool
+    , noteNameVisible : Bool
+    }
+
+
+defaultOptions : Options
+defaultOptions =
+    { highlightedNotes = HighlightedNotes.empty
+    , onClick = \_ -> NoOp
+    , notesClickable = False
+    , noteNameVisible = False
+    }
+
+
+type Fretboard
+    = Fretboard Options
+
+
+fretboard : Fretboard
+fretboard =
+    Fretboard defaultOptions
+
+
+withHighlightedNotes : HighlightedNotes -> Fretboard -> Fretboard
+withHighlightedNotes highlightedNotes (Fretboard options) =
+    Fretboard { options | highlightedNotes = highlightedNotes }
+
+
+withNotesClickable : Bool -> Fretboard -> Fretboard
+withNotesClickable notesClickable (Fretboard options) =
+    Fretboard { options | notesClickable = notesClickable }
+
+
+withNoteNameVisible : Bool -> Fretboard -> Fretboard
+withNoteNameVisible noteNameVisible (Fretboard options) =
+    Fretboard { options | noteNameVisible = noteNameVisible }
+
+
+withOnClick : (Guitar.GuitarNote -> Msg) -> Fretboard -> Fretboard
+withOnClick onClick (Fretboard options) =
+    Fretboard { options | onClick = onClick }
+
+
+fretCount : Int
 fretCount =
     12
 
 
+stringCount : Int
 stringCount =
     Guitar.guitarStrings
         |> List.length
 
 
-isSelected : Model -> Int -> Int -> Bool
-isSelected model stringNum fretNum =
-    let
-        selectedGuitarNote =
-            model.selectedGuitarNote
-
-        selectedFretNum =
-            selectedGuitarNote.fretNum
-
-        selectedStringNum =
-            selectedGuitarNote.stringNum
-    in
-    selectedStringNum == stringNum && selectedFretNum == fretNum
-
-
-isOctave : Model -> Int -> Int -> Bool
-isOctave model stringNum fretNum =
-    model.showOctaves
-        && List.any
-            (\note -> note.stringNum == stringNum && note.fretNum == fretNum)
-            model.selectedGuitarNoteOctaves
-
-
-renderFrets : Model -> Int -> List (Html Msg)
-renderFrets model stringNum =
+renderFrets : Options -> Int -> List (Html Msg)
+renderFrets options stringNum =
     let
         floatToCssRemString float =
             String.concat [ String.fromFloat float, "rem" ]
@@ -53,12 +84,12 @@ renderFrets model stringNum =
                     4
 
                 reverseFretNum =
-                    (fretCount + 1) - toFloat fretNum
+                    (fretCount + 1) - fretNum
 
                 scale =
                     2
             in
-            minFretSize + (reverseFretNum / scale)
+            minFretSize + (toFloat reverseFretNum / toFloat scale)
 
         fretWidthInRems fretNum =
             floatToCssRemString (fretWidth fretNum)
@@ -76,25 +107,33 @@ renderFrets model stringNum =
         stringThicknessInRems =
             floatToCssRemString stringThickness
 
-        selectedNoteName =
-            model.selectedGuitarNote.noteName
+        selectedNoteName fretNum =
+            (Guitar.createGuitarNote stringNum fretNum).noteName
                 |> String.split "/"
                 |> List.head
                 |> Maybe.withDefault "X"
 
+        isSelected fretNum =
+            HighlightedNotes.isSelected options.highlightedNotes (guitarNote fretNum)
+
+        isOctave fretNum =
+            HighlightedNotes.isOctave options.highlightedNotes (guitarNote fretNum)
+
+        isHighlighted fretNum =
+            HighlightedNotes.isHighlighted options.highlightedNotes (guitarNote fretNum)
+
         noteText fretNum =
-            if model.gameMode == Game.LearnNotes && isSelected model stringNum fretNum then
-                [ div [ class "selected-note-name" ] [ text selectedNoteName ] ]
+            if options.noteNameVisible && isSelected fretNum then
+                [ div [ class "selected-note-name" ] [ text (selectedNoteName fretNum) ] ]
 
             else
                 []
 
-        fretOnClick fretNum =
-            if model.gameMode == Game.LearnNotes then
-                onClick (GuitarNoteClicked stringNum fretNum)
+        guitarNote fretNum =
+            Guitar.createGuitarNote stringNum fretNum
 
-            else
-                onClick NoOp
+        fretOnClick fretNum =
+            onClick (options.onClick (guitarNote fretNum))
 
         renderFret fretNum =
             div
@@ -104,9 +143,10 @@ renderFrets model stringNum =
                 [ div
                     [ class "string-line"
                     , classList
-                        [ ( "selected", isSelected model stringNum fretNum )
-                        , ( "octave", isOctave model stringNum fretNum )
-                        , ( "clickable", model.gameMode == Game.LearnNotes )
+                        [ ( "selected", isSelected fretNum )
+                        , ( "octave", isOctave fretNum )
+                        , ( "highlighted", isHighlighted fretNum )
+                        , ( "clickable", options.notesClickable )
                         ]
                     , style "height" stringThicknessInRems
                     , fretOnClick fretNum
@@ -118,29 +158,43 @@ renderFrets model stringNum =
         |> List.map renderFret
 
 
-renderStrings : Model -> List (Html Msg)
-renderStrings model =
+renderStrings : Options -> List (Html Msg)
+renderStrings options =
     List.range 1 stringCount
-        |> List.map (renderString model)
+        |> List.map (renderString options)
 
 
-renderString : Model -> Int -> Html Msg
-renderString model stringNum =
+renderString : Options -> Int -> Html Msg
+renderString options stringNum =
+    let
+        guitarNote =
+            Guitar.createGuitarNote stringNum 0
+
+        isSelected =
+            HighlightedNotes.isSelected options.highlightedNotes guitarNote
+
+        isOctave =
+            HighlightedNotes.isOctave options.highlightedNotes guitarNote
+
+        isHighlighted =
+            HighlightedNotes.isHighlighted options.highlightedNotes guitarNote
+    in
     div [ class "string-container" ]
         [ div
             [ class "string-name"
             , classList
-                [ ( "selected", isSelected model stringNum 0 )
-                , ( "octave", isOctave model stringNum 0 )
+                [ ( "selected", isSelected )
+                , ( "octave", isOctave )
+                , ( "highlighted", isHighlighted )
                 ]
-            , onClick (GuitarNoteClicked stringNum 0)
+            , onClick (options.onClick guitarNote)
             ]
             [ text (Guitar.getGuitarStringName stringNum) ]
-        , div [ class "string" ] (renderFrets model stringNum)
+        , div [ class "string" ] (renderFrets options stringNum)
         ]
 
 
-render : Model -> Html Msg
-render model =
+toHtml : Fretboard -> Html Msg
+toHtml (Fretboard options) =
     div [ class "fretboard-container" ]
-        [ div [ class "fretboard" ] (renderStrings model) ]
+        [ div [ class "fretboard" ] (renderStrings options) ]

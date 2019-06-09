@@ -1,23 +1,11 @@
 module Update exposing (update)
 
-import AudioPorts
 import Game
 import GuessNotesGame exposing (GuessState(..))
-import Guitar exposing (GuitarNote)
-import LearnScalesGame
+import Guitar
 import Model exposing (Model, asGuessNotesGameIn)
 import Msg exposing (Msg(..))
-import Music
 import Random
-
-
-
----- HELPERS ----
-
-
-toTupleWithCmd : Cmd Msg -> Model -> ( Model, Cmd Msg )
-toTupleWithCmd cmd model =
-    ( model, cmd )
 
 
 
@@ -34,6 +22,7 @@ randomFret =
     Random.int 0 12
 
 
+pickRandomNote : Random.Generator Guitar.GuitarNote
 pickRandomNote =
     Random.map2 Guitar.createGuitarNote randomString randomFret
 
@@ -47,102 +36,65 @@ generateRandomGuitarNote =
 ---- UPDATE ----
 
 
+changeGameMode : Model -> Game.GameMode -> ( Model, Cmd Msg )
+changeGameMode model mode =
+    case mode of
+        Game.GuessNotes _ ->
+            let
+                updatedModel =
+                    GuessNotesGame.init
+                        |> asGuessNotesGameIn model
+            in
+            ( updatedModel, generateRandomGuitarNote )
+
+        _ ->
+            ( { model | gameMode = mode }, Cmd.none )
+
+
+updateGameMode : Model -> Game.GameMode -> ( Model, Cmd Msg )
+updateGameMode model mode =
+    case mode of
+        Game.GuessNotes newGameState ->
+            let
+                updatedModel =
+                    newGameState
+                        |> asGuessNotesGameIn model
+            in
+            ( updatedModel, generateRandomGuitarNote )
+
+        _ ->
+            ( { model | gameMode = mode }, Cmd.none )
+
+
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ChangeGameMode mode ->
-            case mode of
-                Game.GuessNotes ->
-                    let
-                        updatedModel =
-                            { model
-                                | guessNotesGame = GuessNotesGame.init
-                                , gameMode = mode
-                                , showOctaves = False
-                            }
-                    in
-                    ( updatedModel, generateRandomGuitarNote )
+            changeGameMode model mode
 
-                Game.LearnNotes ->
-                    ( { model | gameMode = mode, showOctaves = True }, Cmd.none )
+        UpdateGameState newGameState ->
+            updateGameMode model newGameState
 
-                Game.LearnScales ->
-                    let
-                        updatedModel =
-                            { model
-                                | learnScalesGame = LearnScalesGame.init
-                                , gameMode = mode
-                                , showOctaves = False
-                                , highlightedGuitarNotes =
-                                    LearnScalesGame.highlightedGuitarNotes LearnScalesGame.init
-                            }
-                    in
-                    ( updatedModel, Cmd.none )
-
-                _ ->
-                    ( { model | gameMode = mode }, Cmd.none )
-
-        GuessNoteButtonClicked note ->
-            case model.selectedGuitarNote.noteName == note of
-                True ->
-                    model.guessNotesGame
-                        |> GuessNotesGame.setGuesses []
-                        |> GuessNotesGame.setGuessState Correct
-                        |> asGuessNotesGameIn model
-                        |> toTupleWithCmd generateRandomGuitarNote
-
-                False ->
-                    model.guessNotesGame
-                        |> GuessNotesGame.appendGuess note
-                        |> GuessNotesGame.setGuessState Incorrect
-                        |> asGuessNotesGameIn model
-                        |> toTupleWithCmd Cmd.none
-
-        GuitarNoteClicked stringNum fretNum ->
-            let
-                guitarNote =
-                    Guitar.createGuitarNote stringNum fretNum
-
-                octaves =
-                    if model.showOctaves then
-                        Guitar.findAllOctaves guitarNote.noteName 12
-
-                    else
-                        []
-            in
-            ( { model
-                | selectedGuitarNote = guitarNote
-                , selectedGuitarNoteOctaves = octaves
-              }
-            , Guitar.playNoteAudio guitarNote
-            )
-
+        -- GuitarNoteClicked stringNum fretNum ->
+        --     let
+        --         guitarNote =
+        --             Guitar.createGuitarNote stringNum fretNum
+        --     in
+        --     ( { model
+        --         | selectedGuitarNote = guitarNote
+        --         , selectedGuitarNoteOctaves = octaves
+        --       }
+        --     , Guitar.playNoteAudio guitarNote
+        --     )
         PickRandomNote ->
             ( model, generateRandomGuitarNote )
 
-        RandomGuitarNoteSelected guitarNote ->
-            ( { model
-                | selectedGuitarNote = guitarNote
-                , selectedGuitarNoteOctaves = []
-              }
-            , Guitar.playNoteAudio guitarNote
-            )
-
-        ShowOctavesChanged value ->
-            let
-                octaves =
-                    if value then
-                        Guitar.findAllOctaves model.selectedGuitarNote.noteName 12
-
-                    else
-                        []
-            in
-            ( { model
-                | showOctaves = value
-                , selectedGuitarNoteOctaves = octaves
-              }
-            , Cmd.none
-            )
-
-        NoOp ->
+        -- RandomGuitarNoteSelected guitarNote ->
+        --     ( { model
+        --         | selectedGuitarNote = guitarNote
+        --         , selectedGuitarNoteOctaves = []
+        --       }
+        --     , Guitar.playNoteAudio guitarNote
+        --     )
+        _ ->
             ( model, Cmd.none )

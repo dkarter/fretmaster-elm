@@ -1,44 +1,32 @@
-module Model exposing (Model, asGuessNotesGameIn, init, setSelectedGuitarNote)
+module Model exposing (Model, asGuessNotesGameIn, asLearnNotesGameIn, asLearnScalesGameIn, init)
 
 import AudioPorts
-import Game exposing (GameMode)
+import Game exposing (GameMode(..))
 import GuessNotesGame exposing (GuessNotesGame)
-import Guitar exposing (GuitarNote)
+import LearnNotesGame exposing (LearnNotesGame)
 import LearnScalesGame exposing (LearnScalesGame)
 import Msg exposing (Msg)
-import Music
 
 
-setSelectedGuitarNote : GuitarNote -> Model -> Model
-setSelectedGuitarNote guitarNote model =
-    { model | selectedGuitarNote = guitarNote }
+asLearnNotesGameIn : Model -> LearnNotesGame -> Model
+asLearnNotesGameIn model gameState =
+    { model | gameMode = LearnNotes gameState }
 
 
 asGuessNotesGameIn : Model -> GuessNotesGame -> Model
 asGuessNotesGameIn model gameState =
-    { model | guessNotesGame = gameState }
+    { model | gameMode = GuessNotes gameState }
+
+
+asLearnScalesGameIn : Model -> LearnScalesGame -> Model
+asLearnScalesGameIn model gameState =
+    { model | gameMode = LearnScales gameState }
 
 
 type alias Model =
-    { selectedGuitarNote : GuitarNote
-    , selectedGuitarNoteOctaves : List GuitarNote
-    , showOctaves : Bool
-    , gameMode : GameMode
-    , guessNotesGame : GuessNotesGame
-    , learnScalesGame : LearnScalesGame
-    , highlightedGuitarNotes : Guitar.HighlightedNotes
-    }
+    { gameMode : GameMode }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( { selectedGuitarNote = Guitar.createGuitarNote 6 0
-      , selectedGuitarNoteOctaves = []
-      , showOctaves = False
-      , gameMode = Game.LearnNotes
-      , guessNotesGame = GuessNotesGame.init
-      , learnScalesGame = LearnScalesGame.init
-      , highlightedGuitarNotes = []
-      }
-    , AudioPorts.requestLoadSoundFont "/soundfonts"
-    )
+    ( { gameMode = Game.LearnNotes LearnNotesGame.init }, AudioPorts.requestLoadSoundFont "/soundfonts" )

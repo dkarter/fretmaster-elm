@@ -1,7 +1,5 @@
 module Guitar exposing
     ( GuitarNote
-    , HighlightType(..)
-    , HighlightedNotes
     , createGuitarNote
     , findAllOctaves
     , getGuitarNoteName
@@ -20,17 +18,6 @@ import Maybe
 import Music exposing (Note)
 import Music.PitchNotation as PitchNotation exposing (PitchNotation)
 import Utils
-
-
-type HighlightType
-    = Selected
-    | Root
-    | Octave
-    | Normal
-
-
-type alias HighlightedNotes =
-    List ( HighlightType, GuitarNote )
 
 
 type alias GuitarNote =

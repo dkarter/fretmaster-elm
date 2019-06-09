@@ -1,18 +1,26 @@
 module GuessNoteGameControls exposing (render)
 
-import GuessNotesGame exposing (GuessState(..))
+import Game exposing (GameMode(..))
+import GuessNotesGame exposing (GuessNotesGame, GuessState(..))
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (class, classList, disabled)
 import Html.Events exposing (onClick)
 import Maybe
-import Model exposing (Model)
 import Msg exposing (Msg(..))
 import Music
 
 
-renderNoteButtons : List Music.Note -> Html Msg
-renderNoteButtons guesses =
+handleNoteButtonClick : GuessNotesGame -> Music.Note -> Msg
+handleNoteButtonClick gameState note =
+    UpdateGameState (GuessNotes (GuessNotesGame.guess gameState note))
+
+
+renderNoteButtons : GuessNotesGame -> Html Msg
+renderNoteButtons gameState =
     let
+        guesses =
+            GuessNotesGame.getGuesses gameState
+
         normalizedNoteName note =
             note
                 |> String.split "/"
@@ -28,7 +36,7 @@ renderNoteButtons guesses =
             button
                 [ class "note-button"
                 , disablePreviousGuess note
-                , onClick (GuessNoteButtonClicked note)
+                , onClick (handleNoteButtonClick gameState note)
                 , classes note
                 ]
                 [ text (normalizedNoteName note) ]
@@ -55,9 +63,10 @@ renderNoteButtons guesses =
     div [ class "note-buttons" ] noteButtons
 
 
-renderFeedback : Model -> Html Msg
-renderFeedback model =
-    case GuessNotesGame.getGuessState model.guessNotesGame of
+renderFeedback : GuessNotesGame -> Html Msg
+renderFeedback gameState =
+    case GuessNotesGame.getGuessState gameState of
+        -- TODO: can I access the state in a scoped manner? e.g. GameState.Correct
         Correct ->
             div [ class "game-feedback correct" ]
                 [ text "Correct!" ]
@@ -70,8 +79,8 @@ renderFeedback model =
             div [] []
 
 
-render : Model -> List (Html Msg)
-render model =
-    [ renderFeedback model
-    , renderNoteButtons (GuessNotesGame.getGuesses model.guessNotesGame)
+render : GuessNotesGame -> List (Html Msg)
+render gameState =
+    [ renderFeedback gameState
+    , renderNoteButtons gameState
     ]

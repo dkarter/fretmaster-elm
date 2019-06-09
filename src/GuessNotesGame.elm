@@ -6,12 +6,16 @@ module GuessNotesGame exposing
     , getGameState
     , getGuessState
     , getGuesses
+    , getHighlightedGuitarNotes
+    , guess
     , init
     , setGameState
     , setGuessState
     , setGuesses
     )
 
+import Guitar
+import HighlightedNotes exposing (HighlightedNotes)
 import Music
 
 
@@ -31,7 +35,26 @@ type GuessNotesGame
         { guesses : List Music.Note
         , guessState : GuessState
         , gameState : GameState
+        , currentGuitarNote : Guitar.GuitarNote
         }
+
+
+guess : GuessNotesGame -> Music.Note -> GuessNotesGame
+guess game guessNote =
+    let
+        checkCorrectNote (GuessNotesGame { currentGuitarNote }) =
+            currentGuitarNote.noteName == guessNote
+    in
+    case checkCorrectNote game of
+        True ->
+            game
+                |> setGuesses []
+                |> setGuessState Correct
+
+        False ->
+            game
+                |> appendGuess guessNote
+                |> setGuessState Incorrect
 
 
 appendGuess : Music.Note -> GuessNotesGame -> GuessNotesGame
@@ -69,9 +92,16 @@ getGuessState (GuessNotesGame { guessState }) =
     guessState
 
 
+getHighlightedGuitarNotes : GuessNotesGame -> HighlightedNotes
+getHighlightedGuitarNotes (GuessNotesGame { currentGuitarNote }) =
+    currentGuitarNote
+        |> HighlightedNotes.addSelected HighlightedNotes.empty
+
+
 init =
     GuessNotesGame
         { guesses = []
         , guessState = NotSelected
         , gameState = NotStarted
+        , currentGuitarNote = Guitar.createGuitarNote 5 5
         }

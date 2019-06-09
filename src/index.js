@@ -13,7 +13,7 @@ const app = Elm.Main.init({
   audioContext: getAudioContext(),
 });
 
-app.ports.playNote.subscribe(note => app.instrument.play(note));
+// app.ports.playNote.subscribe(note => app.instrument.play(note));
 app.ports.requestLoadSoundFont.subscribe(loadSoundFont);
 
 function loadSoundFont() {

@@ -10,20 +10,19 @@ import Pages.GuessNotesPage as GuessNotesPage
 import Pages.LearnNotesPage as LearnNotesPage
 import Pages.LearnScalesPage as LearnScalesPage
 import Pages.NotFoundPage as NotFoundPage
-import SelectedNote
 
 
 renderPage : Model -> Html Msg
 renderPage model =
     case model.gameMode of
-        Game.LearnNotes ->
-            LearnNotesPage.render model
+        Game.LearnNotes gameState ->
+            LearnNotesPage.render gameState
 
-        Game.GuessNotes ->
-            GuessNotesPage.render model
+        Game.GuessNotes gameState ->
+            GuessNotesPage.render gameState
 
-        Game.LearnScales ->
-            LearnScalesPage.render model
+        Game.LearnScales gameState ->
+            LearnScalesPage.render gameState
 
         _ ->
             NotFoundPage.render

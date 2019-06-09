@@ -3,8 +3,6 @@ module Music exposing (Note, getIndexByNoteName, getNoteNameByIndex, notes)
 import Array
 import List.Extra
 import Maybe
-import Music.ScaleClass exposing (ScaleClass)
-import Utils
 
 
 type alias Note =
