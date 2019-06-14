@@ -12,14 +12,14 @@ $selected-note-color: rgba(195, 255, 48, 0.85);
 $string-color: #808183;
 $correct-color: green;
 $incorrect-color: red;
-$root-color: #EDAE49;
+$root-color: #edae49;
 $second-color: #dd213d;
 $third-color: #e8999b;
 $fourth-color: #dfea0b;
 $fifth-color: #034078;
 $sixth-color: #aa19c4;
-$seventh-color: #00798C;
-$selected-color: #0364BF;
+$seventh-color: #00798c;
+$selected-color: #0364bf;
 $string-name-color: #fff;
 $menu-item-active: #d8d8d8;
 $correct-answer-background-color: #50a350;
@@ -67,7 +67,8 @@ body {
       border: 3px solid $incorrect-color;
     }
 
-    &:active, &:focus {
+    &:active,
+    &:focus {
       outline: none;
     }
   }
@@ -246,6 +247,7 @@ body {
 }
 
 %note {
+  &.chord-octave::after,
   &.octave::after,
   &.root::after,
   &.third::after,
@@ -276,6 +278,10 @@ body {
 
   &.seventh::after {
     background: $seventh-color;
+  }
+
+  &.chord-octave::after {
+    background: $octave-color;
   }
 
   &.octave::after {

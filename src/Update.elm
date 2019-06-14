@@ -226,13 +226,15 @@ update msg model =
 
         ChangeGameMode mode ->
             let
-                showOctaves =
-                    case mode of
-                        Learn ->
-                            True
+                currentNote =
+                    model.selectedGuitarNote.noteName
 
-                        _ ->
-                            False
+                octaves =
+                    if model.showOctaves then
+                        Guitar.findAllOctaves currentNote 12
+
+                    else
+                        []
 
                 cmd =
                     case mode of
@@ -248,7 +250,7 @@ update msg model =
             ( { model
                 | guessNotesGame = GuessNotesGame.init
                 , gameMode = mode
-                , showOctaves = showOctaves
+                , selectedGuitarNoteOctaves = octaves
               }
             , cmd
             )

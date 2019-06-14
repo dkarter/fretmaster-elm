@@ -186,7 +186,8 @@ noteClassList model stringNum fretNum =
     chordClasses
         ++ [ ( "selected", not chordMode && isSelected model stringNum fretNum )
            , ( "clickable", model.gameMode == Learn )
-           , ( "octave", chordMode && isOctave model stringNum fretNum )
+           , ( "chord-octave", chordMode && isOctave model stringNum fretNum )
+           , ( "octave", not chordMode && isOctave model stringNum fretNum )
            ]
 
 

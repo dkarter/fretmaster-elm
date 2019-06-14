@@ -20,7 +20,7 @@ testChordQualityIntervals =
                     , Just PerfectFifth
                     , Nothing
                     ]
-                    (chordQualityIntervals "X|B4" Chord.MajorSeventh 0)
+                    (chordQualityIntervals GuitarChord.FirstSetBrokenFour Chord.MajorSeventh 0)
         , test "returns drop 3 inversion" <|
             \_ ->
                 Expect.equal
@@ -31,5 +31,5 @@ testChordQualityIntervals =
                     , Just Interval.MajorSeventh
                     , Nothing
                     ]
-                    (chordQualityIntervals "X|B4" Chord.MajorSeventh 1)
+                    (chordQualityIntervals GuitarChord.FirstSetBrokenFour Chord.MajorSeventh 1)
         ]
