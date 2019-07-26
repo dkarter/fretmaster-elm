@@ -1,12 +1,14 @@
 module GameControls exposing (render)
 
 import Game exposing (GameMode(..))
+import GuessChordGameControls
 import GuessNoteGameControls
 import Html exposing (Html, div, text)
 import Html.Attributes exposing (class, classList)
 import LearnGameControls
 import Model exposing (Model)
 import Msg exposing (Msg(..))
+import ShowChordControls
 
 
 render : Model -> Html Msg
@@ -19,6 +21,12 @@ render model =
 
                 Learn ->
                     LearnGameControls.render model
+
+                GuessChord ->
+                    GuessChordGameControls.render model
+
+                ShowChord ->
+                    ShowChordControls.render model
 
                 FindNotes ->
                     [ div [] [ text "COMING SOON..." ] ]

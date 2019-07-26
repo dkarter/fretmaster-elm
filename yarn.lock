@@ -1067,7 +1067,7 @@ binwrap@0.1.4:
     tar "^2.2.1"
     unzip "^0.1.11"
 
-binwrap@^0.2.0-rc2:
+binwrap@^0.2.0, binwrap@^0.2.0-rc2:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/binwrap/-/binwrap-0.2.0.tgz#572d0f48c4e767d72d622f0b805ed7ce1db16f9a"
   dependencies:
@@ -2317,6 +2317,13 @@ elliptic@^6.0.0:
     inherits "^2.0.1"
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
+
+elm-format@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/elm-format/-/elm-format-0.8.1.tgz#37796fc06b8460a6d76a054a1216d86d8481155e"
+  integrity sha512-uLcDICdmEoRBaCp3PobcvHtUej2RJFHRYfMd7i3CSH+RsajJYTdiPkviKIq823Kd4gfjQMpNajEyM1lLFez7+A==
+  dependencies:
+    binwrap "^0.2.0"
 
 elm-hot-webpack-loader@^1.0.2:
   version "1.0.2"
