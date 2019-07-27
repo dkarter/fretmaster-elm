@@ -182,12 +182,20 @@ noteClassList model stringNum fretNum =
                     , ( "third", chordMode && isChordTone rt thirdIntervals ci stringNum fretNum )
                     , ( "seventh", chordMode && isChordTone rt seventhIntervals ci stringNum fretNum )
                     ]
+
+        highlightClasses =
+            chordClasses
+                ++ [ ( "selected", not chordMode && isSelected model stringNum fretNum )
+                   , ( "chord-octave", chordMode && isOctave model stringNum fretNum )
+                   , ( "octave", not chordMode && isOctave model stringNum fretNum )
+                   ]
+
+        isHighlighted =
+            List.any (\( _, visible ) -> visible) highlightClasses
     in
-    chordClasses
-        ++ [ ( "selected", not chordMode && isSelected model stringNum fretNum )
-           , ( "clickable", model.gameMode == Learn )
-           , ( "chord-octave", chordMode && isOctave model stringNum fretNum )
-           , ( "octave", not chordMode && isOctave model stringNum fretNum )
+    highlightClasses
+        ++ [ ( "clickable", model.gameMode == Learn )
+           , ( "highlighted-note", isHighlighted )
            ]
 
 
@@ -267,11 +275,11 @@ renderFrets model stringNum =
 renderStrings : Model -> List (Html Msg)
 renderStrings model =
     List.range 1 stringCount
-        |> List.map (renderString model)
+        |> List.map (renderStringName model)
 
 
-renderString : Model -> Int -> Html Msg
-renderString model stringNum =
+renderStringName : Model -> Int -> Html Msg
+renderStringName model stringNum =
     div [ class "string-container" ]
         [ div
             [ class "string-name"
