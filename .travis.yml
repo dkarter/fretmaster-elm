@@ -6,6 +6,6 @@ node_js:
   - '10'
 
 install:
-  - npm i create-elm-app -g
+  - yarn install
 
-script: elm-app test && elm-format --validate src tests
+script: yarn test && yarn format:validate
