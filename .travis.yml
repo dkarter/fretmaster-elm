@@ -8,4 +8,4 @@ node_js:
 install:
   - npm i create-elm-app -g
 
-script: elm-app test
+script: elm-app test && elm-format --validate src tests
