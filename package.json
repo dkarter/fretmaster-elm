@@ -1,11 +1,13 @@
 {
   "name": "FretMaster",
   "scripts": {
-    "build": "yarn build-css && elm-app build",
-    "build-css": "node-sass-chokidar src/ -o src/",
+    "build": "yarn css:build && elm-app build",
+    "css:build": "node-sass-chokidar src/ -o src/",
+    "css:watch": "yarn css:build && node-sass-chokidar src/ -o src/ --watch --recursive",
     "format:validate": "elm-format --validate src tests",
+    "start": "elm-app start",
     "test": "elm-app test",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
+    "test:watch": "elm-app test --watch"
   },
   "version": "1.0.0",
   "main": "index.js",
