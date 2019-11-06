@@ -15,7 +15,7 @@
   "author": "Dorian Karter <dkarter@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
-    "create-elm-app": "^3.2.1",
+    "create-elm-app": "^4.1.0",
     "elm-format": "^0.8.2",
     "elm-webpack-loader": "^5.0.0",
     "node-sass-chokidar": "^1.3.5"
