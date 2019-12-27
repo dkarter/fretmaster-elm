@@ -1,5 +1,5 @@
 {
-  "name": "FretMaster",
+  "name": "fretmaster",
   "scripts": {
     "build": "yarn css:build && elm-app build",
     "css:build": "node-sass-chokidar src/ -o src/",
