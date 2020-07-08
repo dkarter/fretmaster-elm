@@ -9,7 +9,7 @@ A guitar fretboard memorization game built in Elm
 ![screenshot](img/screenshot.png)
 
 
-[Check it out here](https://fretmaster.doriankarter.com/)
+[Check it out on https://fretmaster.app](https://fretmaster.app/)
 
 ## Dependencies
 
