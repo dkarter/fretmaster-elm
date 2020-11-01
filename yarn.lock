@@ -2710,10 +2710,10 @@ elm-asset-webpack-loader@1.1.1:
   resolved "https://registry.yarnpkg.com/elm-asset-webpack-loader/-/elm-asset-webpack-loader-1.1.1.tgz#9e8fc05ea89794006c9f873165200f65c6d8ccc0"
   integrity sha512-J+YKLGNCMLSNhxXfQxaJhQzIiTiKQGo8YlZEntTpZjWy3kTqSF/2qAvnRonM2VvfhbKuhg0cKRKVrt9+cC8bmw==
 
-elm-format@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/elm-format/-/elm-format-0.8.2.tgz#402d32b96014476ccf98ab5c92f4d102f933565f"
-  integrity sha512-BRQaVQOGt9gxK1hqSJn1MISxDGdln22PSYzmHMjqpQY3S9OJY/3kPn5HoiH3bHQYQFwC+X0apsMZldK9VxySow==
+elm-format@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/elm-format/-/elm-format-0.8.4.tgz#8243b6d9eba66708232247e079190a3cdf339dcf"
+  integrity sha512-0KurHC4MBUljdA2Sr+yzcoyAVqCku0LuNpvq5B3UIAlCPZ9PnOW2tUhVnQOCvp9RXngwbnsf18dE48tQ+s8r7g==
   dependencies:
     binwrap "^0.2.2"
 
