@@ -2,6 +2,31 @@
 # yarn lockfile v1
 
 
+"@avh4/elm-format-darwin-arm64@0.8.8-1":
+  version "0.8.8-1"
+  resolved "https://registry.yarnpkg.com/@avh4/elm-format-darwin-arm64/-/elm-format-darwin-arm64-0.8.8-1.tgz#2f3ba8906ea6c34be2d8aebb51eb0806e3ce71cf"
+  integrity sha512-VDu3CRajhB/Sax+CEU4PhIzErBZv8vVxbk9Sk8seUHa1ngfICa3Ejoq3PhnoOFKYF1v1sSxNOC2RnUzvd/9bUw==
+
+"@avh4/elm-format-darwin-x64@0.8.8-1":
+  version "0.8.8-1"
+  resolved "https://registry.yarnpkg.com/@avh4/elm-format-darwin-x64/-/elm-format-darwin-x64-0.8.8-1.tgz#0a2c77a41d258d5835379e0adfd2eb9473ae0ddf"
+  integrity sha512-9NAzi3HUBSHEIx3Nje+a6wFcv6RDKv2PO0OUNcV/XlS4Sou3r89xsYAVAXS8mi4+CKTdscyfSSkgGd8qiCCxAw==
+
+"@avh4/elm-format-linux-arm64@0.8.8-1":
+  version "0.8.8-1"
+  resolved "https://registry.yarnpkg.com/@avh4/elm-format-linux-arm64/-/elm-format-linux-arm64-0.8.8-1.tgz#e9743f709136fb8f14e600a9eed9e80496559b20"
+  integrity sha512-VNuXYphgxtnk7Gw+VBgWBeA9k8wKSo9r/O2F7udgurokYLO8S+RGhLHgD9mb6Yecv/veWz4v9n/O0IggH/BOCQ==
+
+"@avh4/elm-format-linux-x64@0.8.8-1":
+  version "0.8.8-1"
+  resolved "https://registry.yarnpkg.com/@avh4/elm-format-linux-x64/-/elm-format-linux-x64-0.8.8-1.tgz#0afb42d45c8654a69c73aceb017ab08f25fd3552"
+  integrity sha512-IvtmUTDw/V5mBeglLgtQMzWZPc0QvmqUmoJ+vipxYii3DJ/1KV2drtpvlLuFdBlFrehUivtrh4HhOTsdGXxyXQ==
+
+"@avh4/elm-format-win32-x64@0.8.8-1":
+  version "0.8.8-1"
+  resolved "https://registry.yarnpkg.com/@avh4/elm-format-win32-x64/-/elm-format-win32-x64-0.8.8-1.tgz#efd1c262c75f2fd1fd3f69ac913e113dbe03a8f9"
+  integrity sha512-qGYZM2oJFSVQ80Tayk1v15ba7PWCU3B89EkA3Fy4YQasvtA+UrYYR5Bv7MRF4kn6Zp7oSDk4FhknURFsZWZ7kg==
+
 "@babel/cli@7.2.3":
   version "7.2.3"
   resolved "https://registry.yarnpkg.com/@babel/cli/-/cli-7.2.3.tgz#1b262e42a3e959d28ab3d205ba2718e1923cfee6"
@@ -1324,7 +1349,7 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-binwrap@0.2.2, binwrap@^0.2.2:
+binwrap@0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/binwrap/-/binwrap-0.2.2.tgz#7d1ea74b28332f18dfdc75548aef993041ffafc9"
   integrity sha512-Y+Wvypk3JhH5GPZAvlwJAWOVH/OsOhQMSj37vySuWHwQivoALplPxfBA8b973rFJI7OS+O+1YmmYXIiEXVMAcw==
@@ -2711,11 +2736,15 @@ elm-asset-webpack-loader@1.1.1:
   integrity sha512-J+YKLGNCMLSNhxXfQxaJhQzIiTiKQGo8YlZEntTpZjWy3kTqSF/2qAvnRonM2VvfhbKuhg0cKRKVrt9+cC8bmw==
 
 elm-format@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/elm-format/-/elm-format-0.8.2.tgz#402d32b96014476ccf98ab5c92f4d102f933565f"
-  integrity sha512-BRQaVQOGt9gxK1hqSJn1MISxDGdln22PSYzmHMjqpQY3S9OJY/3kPn5HoiH3bHQYQFwC+X0apsMZldK9VxySow==
-  dependencies:
-    binwrap "^0.2.2"
+  version "0.8.8"
+  resolved "https://registry.yarnpkg.com/elm-format/-/elm-format-0.8.8.tgz#524eb2838ea589eff71f06c70131592546d00689"
+  integrity sha512-OJYUtVnepuy8UZdnL5OCjSxUY5+dIGP2NdWTB6icxVVOOH0b8MpJIijTPsGW+ztnv9yzSoTK0dhCuVDh+AGhNQ==
+  optionalDependencies:
+    "@avh4/elm-format-darwin-arm64" "0.8.8-1"
+    "@avh4/elm-format-darwin-x64" "0.8.8-1"
+    "@avh4/elm-format-linux-arm64" "0.8.8-1"
+    "@avh4/elm-format-linux-x64" "0.8.8-1"
+    "@avh4/elm-format-win32-x64" "0.8.8-1"
 
 elm-hot-webpack-loader@^1.1.5:
   version "1.1.6"
