@@ -647,6 +647,31 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@elm_binaries/darwin_arm64@0.19.3-0":
+  version "0.19.3-0"
+  resolved "https://registry.yarnpkg.com/@elm_binaries/darwin_arm64/-/darwin_arm64-0.19.3-0.tgz#b27e09ce3a97b07f1ab9937836162873689b67c7"
+  integrity sha512-Kp6w7gkwm9y2aoR3LK93J5UteHkqDd+l1xsnxdg6C6PDkC/djD1qqS3o02Z9ajkFjbgGezARfpwOp/efbqKLOQ==
+
+"@elm_binaries/darwin_x64@0.19.3-0":
+  version "0.19.3-0"
+  resolved "https://registry.yarnpkg.com/@elm_binaries/darwin_x64/-/darwin_x64-0.19.3-0.tgz#17e901d5c0957cb9f29b80652922fddc5f9e34fb"
+  integrity sha512-sAoiyg/fcwbhQzep0dpoV54y8qIVGRHjDssgTBI6hsptLJfQcCXmcNyvwJNqYeXqBYMMPw1fxlna2QFfXVwdvA==
+
+"@elm_binaries/linux_arm64@0.19.3-0":
+  version "0.19.3-0"
+  resolved "https://registry.yarnpkg.com/@elm_binaries/linux_arm64/-/linux_arm64-0.19.3-0.tgz#b31fb4531c9fd163adb2b7181898db5ed091f9d3"
+  integrity sha512-MRIBxYsHw3jyjXBFRcawADDVM+zn3RqgPPfmHLbhvRDBXrNfbIH1iXh0jMBH4ykBOtGvihk2UGvP0LAwytrOjA==
+
+"@elm_binaries/linux_x64@0.19.3-0":
+  version "0.19.3-0"
+  resolved "https://registry.yarnpkg.com/@elm_binaries/linux_x64/-/linux_x64-0.19.3-0.tgz#ca73878ceb4b9c86e77395a16cd631700714799f"
+  integrity sha512-x+WXNkRZUOuyGPdcRo137rNW1+7KBVXLf2L9oul21tj3MKpE7HC7Kl5VpyWj859YLdYv9M42S2O6YiO9t+MJeQ==
+
+"@elm_binaries/win32_x64@0.19.3-0":
+  version "0.19.3-0"
+  resolved "https://registry.yarnpkg.com/@elm_binaries/win32_x64/-/win32_x64-0.19.3-0.tgz#d5fc8c1055e5b981d69a49d829ffa79bebf9c949"
+  integrity sha512-spoFyfLUq5+sFCuTei3nGgslYMnxuZJAbto/mBd5jbFgZqaf+GGmmuW49YlvMI///S7G+VFR4fn3bgRZJJ1Q7w==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -2762,15 +2787,26 @@ elm-webpack-loader@6.0.0:
     node-elm-compiler "^5.0.0"
     yargs "^6.5.0"
 
-elm-webpack-loader@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/elm-webpack-loader/-/elm-webpack-loader-6.0.1.tgz#45db22979385f114cd56530700cef5b7f33cc9cb"
-  integrity sha512-SkltiDAbegaiPxsQq7sxqTyRUXzD4n6UaT9JTZXIYoAjAEi/ogaIbYLQD6Ne5ZaSW3JOo6S/vb+VO5v0qDdirw==
+elm-webpack-loader@^8.0.0:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/elm-webpack-loader/-/elm-webpack-loader-8.0.1.tgz#9daa3d32eef24c571157b005523ef3778cb72a8f"
+  integrity sha512-oCu46kNJybVDri1Sm78vzdC812UqSzegv+IVEMx3dFSrTQvKYkvVKUfmoryOu76GBZWuFFYVZE+KYpU0OwH+wA==
   dependencies:
-    glob "^7.1.1"
-    loader-utils "^1.0.2"
+    loader-utils "^2.0.0"
     node-elm-compiler "^5.0.0"
-    yargs "^6.5.0"
+  optionalDependencies:
+    elm "^0.19.3-0 || ^0.19.2-0 || ^0.19.1-3 <0.19.1 || 0.19.0-no-deps"
+
+"elm@^0.19.3-0 || ^0.19.2-0 || ^0.19.1-3 <0.19.1 || 0.19.0-no-deps":
+  version "0.19.3-0"
+  resolved "https://registry.yarnpkg.com/elm/-/elm-0.19.3-0.tgz#f2b73342ade44ec0c0ed721a15a3ee66972b36d6"
+  integrity sha512-k7M033Vbzsi4w7G0kByQToRnVK5yaEddzNXTZynRXaJYzwhMI17RRP7GGxdieiIL5kurl2w07ht6/4yQudJ9HA==
+  optionalDependencies:
+    "@elm_binaries/darwin_arm64" "0.19.3-0"
+    "@elm_binaries/darwin_x64" "0.19.3-0"
+    "@elm_binaries/linux_arm64" "0.19.3-0"
+    "@elm_binaries/linux_x64" "0.19.3-0"
+    "@elm_binaries/win32_x64" "0.19.3-0"
 
 elm@latest-0.19.1:
   version "0.19.1-3"
@@ -2790,6 +2826,11 @@ emojis-list@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
   integrity sha1-TapNnbAPmBmIDHn6RXrlsJof04k=
+
+emojis-list@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/emojis-list/-/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
+  integrity sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==
 
 encodeurl@~1.0.2:
   version "1.0.2"
@@ -4398,6 +4439,11 @@ json5@^2.1.0:
   dependencies:
     minimist "^1.2.0"
 
+json5@^2.1.2:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/json5/-/json5-2.2.3.tgz#78cd6f1a19bdc12b73db5ad0c61efd66c1e29283"
+  integrity sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==
+
 jsonfile@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
@@ -4504,6 +4550,15 @@ loader-utils@^1.0.2, loader-utils@^1.1.0, loader-utils@^1.2.3:
     big.js "^5.2.2"
     emojis-list "^2.0.0"
     json5 "^1.0.1"
+
+loader-utils@^2.0.0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/loader-utils/-/loader-utils-2.0.4.tgz#8b5cb38b5c34a9a018ee1fc0e6a066d1dfcc528c"
+  integrity sha512-xXqpXoINfFhgua9xiqD8fPFHgkoq1mmmpE92WlDbm9rNRd/EbRb+Gqf908T2DMfuHjjJlksiK2RbHVOdD/MqSw==
+  dependencies:
+    big.js "^5.2.2"
+    emojis-list "^3.0.0"
+    json5 "^2.1.2"
 
 locate-path@^2.0.0:
   version "2.0.0"
